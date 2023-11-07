@@ -25,23 +25,23 @@ const router = createRouter({
           component: () => import('@/views/MclConversationView.vue'),
         },
         {
-          path: 'image-generation',
-          name: 'Image Generation',
+          path: 'image',
+          name: 'Image',
           component: () => import('@/views/MclImageGenerationView.vue'),
         },
         {
-          path: 'video-generation',
-          name: 'Video Generation',
+          path: 'video',
+          name: 'Video',
           component: () => import('@/views/MclVideoGenerationView.vue'),
         },
         {
-          path: 'music-generation',
-          name: 'Music Generation',
+          path: 'music',
+          name: 'Music',
           component: () => import('@/views/MclMusicGenerationView.vue'),
         },
         {
-          path: 'code-generation',
-          name: 'Code Generation',
+          path: 'code',
+          name: 'Code',
           component: () => import('@/views/MclCodeGenerationView.vue'),
         },
         {
