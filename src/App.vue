@@ -1,4 +1,9 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useSupabaseUser } from '@/composables/useSupabaseUser';
+import { supabase } from '@/supabase';
+
+useSupabaseUser(supabase);
+</script>
 
 <template>
   <RouterView />

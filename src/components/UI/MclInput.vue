@@ -1,0 +1,99 @@
+<script setup lang="ts">
+import type { ComputedRef } from 'vue';
+import type { InputProps } from '@/types/components/MclInput';
+import type { ClassesRecord } from '@/types/types';
+import { computed, ref, useSlots } from 'vue';
+
+const props = withDefaults(defineProps<InputProps>(), {
+  type: 'text',
+  label: '',
+  placeholder: '',
+  error: '',
+});
+
+const modelValue = defineModel<string>();
+
+const slots = useSlots();
+
+const darkClasses: ClassesRecord = {
+  'dark:bg-dark-3': true,
+  'dark:border-truegray-5': true,
+  'dark:text-light-6': true,
+  'dark:placeholder:text-truegray-5': true,
+  'dark:focus:border-amber-6/75': true,
+};
+
+const lightClasses: ClassesRecord = {
+  'bg-neutral-2': true,
+  'border-truegray-6': true,
+  'text-truegray-8': true,
+  'placeholder:text-truegray-5': true,
+  'focus:border-amber-6/75': true,
+};
+
+const resultClasses: ComputedRef<(string | ClassesRecord)[]> = computed(() => {
+  return [slots.leftIcon ? 'pl-10' : '', props.error ? 'error' : ''];
+});
+
+const isFocused = ref(false);
+
+const iconStyle = computed(() => {
+  if (props.error) {
+    return '#dc2626';
+  } else if (isFocused.value) {
+    return '#d97706';
+  } else {
+    return '#525252';
+  }
+});
+</script>
+
+<template>
+  <div class="input-group relative flex flex-col gap-1">
+    <label
+      :for="`input-${props.type}-${props.placeholder}`"
+      class="block text-sm font-medium text-truegray-6 dark:text-truegray-4"
+      v-if="props.label"
+    >
+      {{ props.label }}
+    </label>
+    <div class="inline-flex relative">
+      <div
+        class="svg absolute inset-y-0 flex items-center pl-2 pointer-events-none"
+        v-if="slots.leftIcon"
+      >
+        <slot name="leftIcon"></slot>
+      </div>
+      <input
+        :type="props.type"
+        :id="`input-${props.type}-${props.placeholder}`"
+        class="input"
+        :class="[darkClasses, lightClasses, resultClasses]"
+        :placeholder="props.placeholder"
+        v-model.trim="modelValue"
+        @focus="isFocused = true"
+        @blur="isFocused = false"
+      />
+    </div>
+    <small
+      v-if="error"
+      class="text-red-6 items-end"
+    >
+      {{ error }}
+    </small>
+  </div>
+</template>
+
+<style scoped lang="scss">
+.error {
+  border: 1px solid #dc2626;
+  &:focus {
+    border: 1px solid #dc2626;
+  }
+}
+
+.svg:deep(svg) {
+  transition: 0.4s all ease-in-out;
+  color: v-bind('iconStyle');
+}
+</style>
