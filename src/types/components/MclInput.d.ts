@@ -22,9 +22,11 @@ export type HTMLInputTypeAttribute =
   | 'url'
   | 'week';
 
-export type InputProps = {
+export type TInputProps = {
   type?: HTMLInputTypeAttribute;
   label?: string;
   placeholder?: string;
   error?: string;
+  customClass?: string;
+  clearable?: boolean;
 };

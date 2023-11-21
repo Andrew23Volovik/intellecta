@@ -18,7 +18,7 @@ navigationLinkNames.forEach((name: string) => {
 
 <template>
   <aside
-    class="bg-neutral-6 dark:bg-dark-3 border-r-1 border-r-solid border-r-truegray-3 dark:border-r-truegray-6 z-11"
+    class="fixed h-full top-0 sm:w-48 lg:w-64 xl:w-104 bg-neutral-6 dark:bg-dark-3 border-r-1 border-r-solid border-r-truegray-3 dark:border-r-truegray-6 z-100"
   >
     <RouterLink
       :to="{ name: 'Landing' }"

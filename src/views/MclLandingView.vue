@@ -7,7 +7,7 @@ import SolidIcon from '@/components/icons/landing/SolidIcon.vue';
 import StepsizqIcon from '@/components/icons/landing/StepsizqIcon.vue';
 import HandlessIcon from '@/components/icons/landing/HandlessIcon.vue';
 import MclButton from '@/components/UI/MclButton.vue';
-import IconEmail from '@/components/icons/IconEmail.vue';
+import MclCard from '@/components/UI/MclCard.vue';
 
 const landingIcons = [
   {
@@ -71,8 +71,8 @@ const landingIcons = [
       </p>
       <MclButton class="w-72"> Start Generating For Free </MclButton>
       <div class="grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-4 lg:grid-cols-3 xl:grid-cols-6">
-        <div
-          class="flex justify-center items-center gap-4 border-solid border-1 border-truegray-6 p-4 rounded-lg shadow-lg bg-light-6"
+        <MclCard
+          class="flex justify-center items-center gap-4"
           v-for="({ title, comp }, idx) in landingIcons"
           :key="idx"
         >
@@ -81,7 +81,7 @@ const landingIcons = [
             class="grayscale w-8 h-8"
           />
           <h3 class="text-xl font-400 text-truegray-6">{{ title }}</h3>
-        </div>
+        </MclCard>
       </div>
     </main>
     <footer

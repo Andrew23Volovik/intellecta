@@ -11,7 +11,7 @@ import { useForm } from 'vee-validate';
 import * as yup from 'yup';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
-import { supabase } from '@/supabase';
+import { supabase } from '@/lib/supabase';
 
 const singMethod: Ref<'SingUp' | 'SingIn'> = ref('SingIn');
 const email: Ref<string> = ref('');

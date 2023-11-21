@@ -6,7 +6,7 @@ import MclButton from '@/components/UI/MclButton.vue';
 import IconGoogle from '@/components/icons/IconGoogle.vue';
 import MclDivider from '@/components/UI/MclDivider.vue';
 import type { Ref } from 'vue';
-import type { IFormFieldValidations } from '@/types/types';
+import type { TFormFieldValidations } from '@/types/types';
 import { ref } from 'vue';
 import { object, ObjectSchema, string } from 'yup';
 import { useForm } from 'vee-validate';
@@ -16,7 +16,7 @@ import { useRouter } from 'vue-router';
 const email: Ref<string> = ref('');
 const password: Ref<string> = ref('');
 
-const schema: ObjectSchema<Omit<IFormFieldValidations, 'lastName' | 'firstName'>> = object({
+const schema: ObjectSchema<Omit<TFormFieldValidations, 'lastName' | 'firstName'>> = object({
   email: string().email('Email must be a valid').required(),
   password: string().min(6, 'Password must be at least 6 characters').required(),
 });

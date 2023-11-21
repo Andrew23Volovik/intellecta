@@ -4,21 +4,27 @@ import { onMounted, ref } from 'vue';
 import { useSwipe } from '@/composables/useSwipe';
 import { useRoute, useRouter } from 'vue-router';
 import { navigationLinkNames } from '@/const';
+import { useBreakpoints } from '@/composables/useBreakpoints';
 
 const touchedArea: Ref<any> = ref();
 
 const currNavIdx: Ref<number> = ref(0);
 const router = useRouter();
+const { screenType } = useBreakpoints();
 useSwipe<typeof touchedArea>(touchedArea, {
   onSwipeLeft() {
-    currNavIdx.value++;
-    if (currNavIdx.value >= navigationLinkNames.length) currNavIdx.value = 0;
-    router.push({ name: navigationLinkNames[currNavIdx.value] });
+    if (screenType.value === 'sm') {
+      currNavIdx.value++;
+      if (currNavIdx.value >= navigationLinkNames.length) currNavIdx.value = 0;
+      router.push({ name: navigationLinkNames[currNavIdx.value] });
+    }
   },
   onSwipeRight() {
-    currNavIdx.value--;
-    if (currNavIdx.value < 0) currNavIdx.value = navigationLinkNames.length - 1;
-    router.push({ name: navigationLinkNames[currNavIdx.value] });
+    if (screenType.value === 'sm') {
+      currNavIdx.value--;
+      if (currNavIdx.value < 0) currNavIdx.value = navigationLinkNames.length - 1;
+      router.push({ name: navigationLinkNames[currNavIdx.value] });
+    }
   },
 });
 

@@ -5,8 +5,9 @@ import MclDivider from '@/components/UI/MclDivider.vue';
 import IconGitHub from '@/components/icons/IconGitHub.vue';
 import IconGoogle from '@/components/icons/IconGoogle.vue';
 import IconEmail from '@/components/icons/IconEmail.vue';
+
 import type { Ref } from 'vue';
-import type { IFormFieldValidations } from '@/types/types';
+import type { TFormFieldValidations } from '@/types/types';
 import { object, ObjectSchema, string } from 'yup';
 import { useForm } from 'vee-validate';
 import { ref } from 'vue';
@@ -21,7 +22,7 @@ const password: Ref<string> = ref('');
 const firstName: Ref<string> = ref('');
 const lastName: Ref<string> = ref('');
 
-const schema: ObjectSchema<IFormFieldValidations> = object({
+const schema: ObjectSchema<TFormFieldValidations> = object({
   email: string().email('Email must be a valid').required(),
   password: string().min(6, 'Password must be at least 6 characters').required(),
   firstName: string()
@@ -34,7 +35,7 @@ const schema: ObjectSchema<IFormFieldValidations> = object({
     .required(),
 });
 
-const { defineComponentBinds, handleSubmit, errors, setErrors } = useForm<IFormFieldValidations>({
+const { defineComponentBinds, handleSubmit, errors, setErrors } = useForm<TFormFieldValidations>({
   validationSchema: schema,
 });
 

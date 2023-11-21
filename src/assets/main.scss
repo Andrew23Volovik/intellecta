@@ -1,0 +1,8 @@
+@use "sass:meta";
+
+html.light {
+  @include meta.load-css("highlight.js/styles/base16/equilibrium-gray-light.min.css");
+}
+html.dark {
+  @include meta.load-css("highlight.js/styles/base16/chalk.min.css");
+}

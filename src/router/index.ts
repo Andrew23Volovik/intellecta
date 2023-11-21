@@ -1,10 +1,9 @@
 import type { NavigationGuardNext, RouteLocationNormalized } from 'vue-router';
 import { createRouter, createWebHistory } from 'vue-router';
-import type { IRemoveHashReturn } from '@/types/types';
-import { supabase } from '@/supabase';
+import { supabase } from '@/lib/supabase';
 
-const removeHash = (to: RouteLocationNormalized): IRemoveHashReturn | undefined => {
-  if (to.hash.startsWith('#access_token')) return { path: to.path, query: to.query, hash: '' };
+const removeHash = (to: RouteLocationNormalized, next: NavigationGuardNext): void => {
+  if (to.hash.startsWith('#access_token')) return next({ ...to, hash: '' });
 };
 
 const authGuard = async (to: RouteLocationNormalized, next: NavigationGuardNext): Promise<void> => {
@@ -12,11 +11,7 @@ const authGuard = async (to: RouteLocationNormalized, next: NavigationGuardNext)
     const {
       data: { session },
     } = await supabase.auth.getSession();
-    if (!session?.user) {
-      return next({ name: 'Auth' });
-    } else {
-      return next();
-    }
+    return !session?.user ? next({ name: 'Auth' }) : next();
   }
   return next();
 };
@@ -47,7 +42,6 @@ const router = createRouter({
           path: 'dashboard',
           name: 'Dashboard',
           component: () => import('@/views/app/MclDashboardView.vue'),
-          beforeEnter: [removeHash],
         },
         {
           path: 'conversation',
@@ -85,6 +79,7 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next): Promise<void> => {
+  removeHash(to, next);
   await authGuard(to, next);
 });
 

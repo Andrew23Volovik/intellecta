@@ -2,7 +2,7 @@ import type { AuthError } from '@supabase/supabase-js';
 import type { StoreDefinition } from 'pinia';
 import type { IAuthStoreActions, IAuthUser, AuthStoreState, AuthStoreGetters } from '@/types/types';
 import { defineStore } from 'pinia';
-import { supabase } from '@/supabase';
+import { supabase } from '@/lib/supabase';
 
 export const useAuthStore: StoreDefinition<'auth', AuthStoreState, AuthStoreGetters, IAuthStoreActions> = defineStore(
   'auth',

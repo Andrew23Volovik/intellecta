@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { AsyncComponentLoader, Component, Ref } from 'vue';
 import { computed, defineAsyncComponent, ref } from 'vue';
-import { supabase } from '@/supabase';
+import { supabase } from '@/lib/supabase';
+import MclCard from '@/components/UI/MclCard.vue';
 
 interface AuthListComponents {
   singUp: Component;
@@ -27,10 +28,6 @@ const changeSingMethod = () => {
   }
 };
 
-const logOut = () => {
-  supabase.auth.signOut();
-};
-
 const changeToSingInComp = () => {
   singMethod.value = 'singIn';
 };
@@ -38,9 +35,7 @@ const changeToSingInComp = () => {
 
 <template>
   <section class="h-full flex justify-center items-center dark:bg-dark-6 bg-neutral-2">
-    <div
-      class="dark:bg-dark-4 w-64 sm:w-84 bg-light-6 p-8 border-1 border-solid border-truegray-6 rounded-lg drop-shadow-lg"
-    >
+    <MclCard class="w-64 sm:w-84">
       <Transition
         name="slide-up"
         mode="out-in"
@@ -77,7 +72,7 @@ const changeToSingInComp = () => {
           {{ singMethod === 'singUp' ? 'Sing In' : 'Sing Up' }}
         </span>
       </p>
-    </div>
+    </MclCard>
   </section>
 </template>
 

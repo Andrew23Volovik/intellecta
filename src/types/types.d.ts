@@ -1,4 +1,3 @@
-import type { LocationQuery } from 'vue-router';
 import type { AuthError } from '@supabase/supabase-js';
 
 export type ClassesRecord = Record<string, boolean>;
@@ -10,6 +9,16 @@ export interface IAuthUser {
   lastName: string;
 }
 
+export type TFormFieldValidations = {
+  email: string | undefined;
+  password: string | undefined;
+  firstName: string | undefined;
+  lastName: string | undefined;
+};
+export type TSearchValidations = {
+  prompt: string | undefined;
+};
+
 export type AuthStoreState = Record<any, never>;
 export type AuthStoreGetters = Record<any, never>;
 
@@ -19,15 +28,21 @@ export interface IAuthStoreActions {
   supabaseUserSingInWithOAuth(type: 'google' | 'github'): Promise<AuthError | undefined>;
 }
 
-export interface IFormFieldValidations {
-  email: string | undefined;
-  password: string | undefined;
-  firstName: string | undefined;
-  lastName: string | undefined;
-}
+export type TChatRoles = 'user' | 'assistant' | 'system';
+export type TChatMessage = {
+  role: TChatRoles;
+  content: string;
+};
 
-export interface IRemoveHashReturn {
-  path: string;
-  query: LocationQuery;
-  hash: string;
-}
+export type OpenAIStoreState = {
+  conversationChat: TChatMessage[];
+  init: boolean;
+};
+
+export type OpenAIStoreGetters = {
+  getOpenAIConversationChat: (state: OpenAIStoreState) => TChatMessage[];
+};
+
+export type OpenAIStoreActions = {
+  openAIConversation(message: TChatMessage): Promise<void>;
+};
