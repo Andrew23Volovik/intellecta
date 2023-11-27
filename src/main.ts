@@ -7,9 +7,11 @@ import piniaPluginStorage from '@/plugins/piniaPluginStorage';
 import App from './App.vue';
 import router from './router';
 import markdownit from '@/plugins/markdownit';
+import clickOutsideDirective from '@/plugins/clickOutsideDirective';
 
 const app = createApp(App);
 
+app.directive('click-outside', clickOutsideDirective);
 app.use(createPinia().use(piniaPluginStorage));
 app.use(markdownit);
 app.use(router);

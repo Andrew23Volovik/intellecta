@@ -1,4 +1,11 @@
 {
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "esModuleInterop": true
+  },
   "files": [],
   "references": [
     {

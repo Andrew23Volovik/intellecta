@@ -32,7 +32,7 @@ const store = useOpenAIStore();
 const isLoading = ref(false);
 const onSuccess = async () => {
   try {
-    const userMessage: TChatMessage = {
+    const userMessage: TChatMessage<string> = {
       role: 'user',
       content: prompt.value,
     };
@@ -40,7 +40,7 @@ const onSuccess = async () => {
     store.conversationChat.push(userMessage);
     isLoading.value = true;
     prompt.value = '';
-    await store.openAIConversation(userMessage);
+    await store.generateConversation(userMessage);
     isLoading.value = false;
   } catch (e) {
     if (e instanceof Error) {
@@ -80,7 +80,7 @@ const clearStore = () => {
         </template>
       </MclInputSearch>
       <MclChatLayout
-        :messages="store.getOpenAIConversationChat"
+        :messages="store.getConversationChat"
         :is-loading="isLoading"
         @clear-chat="clearStore"
       >
@@ -88,7 +88,7 @@ const clearStore = () => {
           <div
             v-if="content"
             class="markdown max-w-none grid text-sm lg:text-base dark:text-light-6 text-truegray-6 text-justify"
-            v-html="$mdRender.render(content)"
+            v-html="$mdRender.render(typeof content === 'string' ? content : '')"
           />
         </template>
       </MclChatLayout>

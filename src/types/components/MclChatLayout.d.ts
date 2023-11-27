@@ -1,6 +1,6 @@
-import type { TChatMessage } from '@/types/types';
+import type { TChatImage, TChatMessage } from '@/types/types';
 
 export type TChatLayoutProps = {
-  messages: TChatMessage[];
+  messages: TChatMessage<string | string[] | TChatImage[]>[];
   isLoading: boolean;
 };

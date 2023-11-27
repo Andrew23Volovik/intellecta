@@ -7,6 +7,8 @@ export default defineConfig({
       'border-1 border-solid text-base outline-none focus:border-solid focus:border-1 rounded-lg px-2 py-1 w-full shadow-sm tracking-widest ease-in-out transition-500 sm:py-1.75 md:py-2.25',
     card: 'w-full  rounded-lg shadow-md ease-in-out transition-500 p-4 xl:p-8',
     icon: 'h-6 w-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10',
+    select:
+      'relative flex justify-between items-center border border-solid focus:border-amber-6 rounded-lg text-base p-1 overflow-hidden lg:p-2',
   },
   presets: [
     presetUno(),
