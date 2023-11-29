@@ -10,7 +10,7 @@ import type { Ref } from 'vue';
 import { defineAsyncComponent, ref } from 'vue';
 import { useForm } from 'vee-validate';
 import { object, ObjectSchema, string } from 'yup';
-import { useOpenAIStore } from '@/stores/openAI';
+import { useAIStore } from '@/stores/artificialIntelligence';
 
 const videoHeadingData: THeadingProps = {
   title: 'Video Generation',
@@ -27,7 +27,7 @@ const { defineComponentBinds, handleSubmit, errors, setErrors } = useForm({
 });
 const promptValidation = defineComponentBinds('prompt');
 
-const store = useOpenAIStore();
+const store = useAIStore();
 const isLoading = ref(false);
 const onSuccess = async () => {
   try {
@@ -67,8 +67,11 @@ const clearStore = () => {
   store.videoChat = [];
 };
 
-function isStringArray(x: any[]): x is string[] {
-  return x.every((i) => typeof i === 'string');
+function isStringArray(x: unknown): x is string[] {
+  if (Array.isArray(x)) {
+    return x.every((i) => typeof i === 'string');
+  }
+  return false;
 }
 </script>
 

@@ -1,8 +1,8 @@
 import type { Application } from 'express';
 import express from 'express';
 import cors from 'cors';
-import { router as videoRoute } from './routes/video';
 import { errorHandler } from './middleware/errors';
+import { router } from './routes/index';
 
 const app: Application = express();
 app.use(cors());
@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/api', videoRoute);
+app.use('/api', router);
 
 app.use(errorHandler);
 

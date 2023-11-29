@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { useSupabaseUser } from '@/composables/useSupabaseUser';
 import { supabase } from '@/lib/supabase';
-import { useOpenAIStore } from '@/stores/openAI';
-
+import { useAIStore } from '@/stores/artificialIntelligence';
 useSupabaseUser(supabase);
 
-const { $patch } = useOpenAIStore();
+const { $patch } = useAIStore();
 $patch({ init: true });
 </script>
 

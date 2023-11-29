@@ -4,12 +4,11 @@ import { Router } from 'express';
 import { isApiError, RouteError } from '../serverTypes';
 import { replicate } from '../replicateAPI';
 
-export const videoRouter = Router();
+export const musicRouter = Router();
 
-const baseInstructionVideo =
-  'anotherjesse/zeroscope-v2-xl:9f747673945c62801b13b84701c783929c0ee784e4748ec062204894dda1a351';
-videoRouter.post(
-  '/video',
+const baseInstructionMusic = 'riffusion/riffusion:8cf61ea6c56afd61d8f5b9ffd14d7c216c0a93844ce2d82ac1c9ecc9c7f24e05';
+musicRouter.post(
+  '/music',
   async (
     req: Request<any, any, TUserRequestDto<string>, any, any>,
     res: Response<TUserResponseDto<string[]> | RouteError | string, any>,
@@ -26,8 +25,8 @@ videoRouter.post(
     }
 
     try {
-      const data = await replicate.run(baseInstructionVideo, {
-        input: { prompt },
+      const data = await replicate.run(baseInstructionMusic, {
+        input: { prompt_a: prompt },
       });
       return res.status(200).json({
         role: 'assistant',

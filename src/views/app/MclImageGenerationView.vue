@@ -11,7 +11,7 @@ import type { Ref } from 'vue';
 import { defineAsyncComponent, ref } from 'vue';
 import { useForm } from 'vee-validate';
 import { object, ObjectSchema, string } from 'yup';
-import { useOpenAIStore } from '@/stores/openAI';
+import { useAIStore } from '@/stores/artificialIntelligence';
 import MclSelect from '@/components/UI/MclSelect.vue';
 import MclCard from '@/components/UI/MclCard.vue';
 import MclButton from '@/components/UI/MclButton.vue';
@@ -36,7 +36,7 @@ const { defineComponentBinds, handleSubmit, errors, setErrors } = useForm({
 });
 const promptValidation = defineComponentBinds('prompt');
 
-const store = useOpenAIStore();
+const store = useAIStore();
 const isLoading = ref(false);
 const onSuccess = async () => {
   try {

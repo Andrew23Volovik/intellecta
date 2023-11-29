@@ -32,6 +32,10 @@ export type TChatRoles = 'user' | 'assistant' | 'system';
 export type TChatImage = {
   url?: string;
 };
+export type TChatMusic = {
+  audio: string;
+  spectrogram: string;
+};
 export type TChatMessage<T> = {
   role: TChatRoles;
   content: T;
@@ -52,21 +56,27 @@ export function isBaseError(data: TBaseError): data is TBaseError {
   return typeof data === 'object' && data !== null && 'error' in data;
 }
 
-export type AIStoreState = {
+export type TAIStoreState = {
   conversationChat: TChatMessage<string>[];
   imageChat: TChatMessage<TChatImage[] | string>[];
   videoChat: TChatMessage<string[] | string>[];
+  musicChat: TChatMessage<TChatMusic | string>[];
+  codeChat: TChatMessage<string>[];
   init: boolean;
 };
 
-export type AIStoreGetters = {
-  getConversationChat: (state: AIStoreState) => TChatMessage<string>[];
-  getImageChat: (store: AIStoreState) => TChatMessage<TChatImage[] | string>[];
-  getVideoChat: (store: AIStoreState) => TChatMessage<string[] | string>[];
+export type TAIStoreGetters = {
+  getConversationChat: (state: TAIStoreState) => TChatMessage<string>[];
+  getImageChat: (store: TAIStoreState) => TChatMessage<TChatImage[] | string>[];
+  getVideoChat: (store: TAIStoreState) => TChatMessage<string[] | string>[];
+  getMusicChat: (store: TAIStoreState) => TChatMessage<TChatMusic | string>[];
+  getCodeChat: (store: TAIStoreState) => TChatMessage<string>[];
 };
 
-export type AIStoreActions = {
-  generateConversation(message: TChatMessage<string>): Promise<void>;
-  generateImage(message: TImageGenerateMessage): Promise<void>;
+export type TAIStoreActions = {
+  generateConversation(message: TChatMessage<string>): Promise<Error | undefined>;
+  generateImage(message: TImageGenerateMessage): Promise<Error | undefined>;
   generateVideo(message: TChatMessage<string>): Promise<Error | undefined>;
+  generateMusic(message: TChatMessage<string>): Promise<Error | undefined>;
+  generateCode(message: TChatMessage<string>): Promise<Error | undefined>;
 };

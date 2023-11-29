@@ -4,14 +4,13 @@ import IconArrowSearch from '@/components/icons/IconArrowSearch.vue';
 import MclHeading from '@/components/UI/MclHeading.vue';
 import MclLayout from '@/components/MclLayout.vue';
 import MclChatLayout from '@/components/UI/MclChatLayout.vue';
-
 import type { THeadingProps } from '@/types/components/MclHeading';
 import type { TChatMessage, TSearchValidations } from '@/types/types';
 import type { Ref } from 'vue';
 import { defineAsyncComponent, ref } from 'vue';
 import { useForm } from 'vee-validate';
 import { object, ObjectSchema, string } from 'yup';
-import { useOpenAIStore } from '@/stores/openAI';
+import { useAIStore } from '@/stores/artificialIntelligence';
 
 const conversationHeadingData: THeadingProps = {
   title: 'Conversation',
@@ -28,7 +27,7 @@ const { defineComponentBinds, handleSubmit, errors, setErrors } = useForm({
 });
 const searchValidation = defineComponentBinds('prompt');
 
-const store = useOpenAIStore();
+const store = useAIStore();
 const isLoading = ref(false);
 const onSuccess = async () => {
   try {
@@ -40,8 +39,12 @@ const onSuccess = async () => {
     store.conversationChat.push(userMessage);
     isLoading.value = true;
     prompt.value = '';
-    await store.generateConversation(userMessage);
+    const data = await store.generateConversation(userMessage);
     isLoading.value = false;
+
+    if (data instanceof Error) {
+      throw new Error(data.message);
+    }
   } catch (e) {
     if (e instanceof Error) {
       setErrors({

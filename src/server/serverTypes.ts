@@ -15,6 +15,15 @@ export class RouteError extends Error implements IRouteError {
   }
 }
 
+export type TUserRequestDto<T> = {
+  prompt: T;
+};
+
+export type TUserResponseDto<T> = {
+  role: 'assistant';
+  content: T;
+};
+
 export type TApiError = {
   message: string;
   response: {
