@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import type { AsyncComponentLoader, Component, Ref } from 'vue';
+import type { AsyncComponentLoader, Component, ComputedRef, Ref } from 'vue';
 import { computed, defineAsyncComponent, ref } from 'vue';
-import { supabase } from '@/lib/supabase';
 import MclCard from '@/components/UI/MclCard.vue';
 
 interface AuthListComponents {
@@ -18,9 +17,9 @@ const listComp: AuthListComponents = {
 };
 
 const singMethod: Ref<'singUp' | 'singIn'> = ref('singUp');
-const currComp = computed(() => listComp[singMethod.value]);
+const currComp: ComputedRef<Component> = computed(() => listComp[singMethod.value]);
 
-const changeSingMethod = () => {
+const changeSingMethod = (): void => {
   if (singMethod.value === 'singUp') {
     singMethod.value = 'singIn';
   } else {
@@ -28,7 +27,7 @@ const changeSingMethod = () => {
   }
 };
 
-const changeToSingInComp = () => {
+const changeToSingInComp = (): void => {
   singMethod.value = 'singIn';
 };
 </script>

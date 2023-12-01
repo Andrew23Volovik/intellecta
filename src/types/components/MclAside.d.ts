@@ -1,6 +1,6 @@
 import { DefineComponent } from 'vue/dist/vue';
 
-export type NavigationLinks = {
+export type TNavigationLinks = {
   title: string;
   icon: DefineComponent;
 };

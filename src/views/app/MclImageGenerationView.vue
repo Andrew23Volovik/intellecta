@@ -4,17 +4,18 @@ import IconArrowSearch from '@/components/icons/IconArrowSearch.vue';
 import MclHeading from '@/components/UI/MclHeading.vue';
 import MclLayout from '@/components/MclLayout.vue';
 import MclChatLayout from '@/components/UI/MclChatLayout.vue';
+import MclSelect from '@/components/UI/MclSelect.vue';
+import MclCard from '@/components/UI/MclCard.vue';
+import MclButton from '@/components/UI/MclButton.vue';
 
 import type { THeadingProps } from '@/types/components/MclHeading';
 import type { TImageGenerateMessage, TSearchValidations } from '@/types/types';
 import type { Ref } from 'vue';
+
 import { defineAsyncComponent, ref } from 'vue';
 import { useForm } from 'vee-validate';
 import { object, ObjectSchema, string } from 'yup';
 import { useAIStore } from '@/stores/artificialIntelligence';
-import MclSelect from '@/components/UI/MclSelect.vue';
-import MclCard from '@/components/UI/MclCard.vue';
-import MclButton from '@/components/UI/MclButton.vue';
 
 const imageHeadingData: THeadingProps = {
   title: 'Image Generation',

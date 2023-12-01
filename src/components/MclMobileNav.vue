@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import type { Ref } from 'vue';
-import type { NavigationLinks } from '@/types/components/MclAside';
+import type { TNavigationLinks } from '@/types/components/MclAside';
+
 import { defineAsyncComponent, markRaw, ref } from 'vue';
 import { navigationLinkNames } from '@/const';
 import { dashboardIconsMap } from '@/helpers/dashboardIconsMap';
 
-const mobileNavLinkData: Ref<NavigationLinks[]> = ref([]);
+const mobileNavLinkData: Ref<TNavigationLinks[]> = ref([]);
 
 navigationLinkNames.forEach((name: string) => {
   mobileNavLinkData.value.push({

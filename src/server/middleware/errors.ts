@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from 'express';
-import { RouteError } from '../serverTypes';
+import { RouteError } from '../types';
 
 export const errorHandler = (err: Error, req: Request, res: Response<{ error: string }, any>, next: NextFunction) => {
   if (err instanceof RouteError) {

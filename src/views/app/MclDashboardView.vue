@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import MclCard from '@/components/UI/MclCard.vue';
+import IconArrowRight from '@/components/icons/IconArrowRight.vue';
+
 import type { Ref } from 'vue';
-import type { NavigationLinks } from '@/types/components/MclAside';
+import type { TNavigationLinks } from '@/types/components/MclAside';
+
 import { defineAsyncComponent, markRaw, ref } from 'vue';
 import { navigationLinkNames } from '@/const';
 import { dashboardIconsMap } from '@/helpers/dashboardIconsMap';
-import IconArrowRight from '@/components/icons/IconArrowRight.vue';
 
-const dashboardNavigation: Ref<NavigationLinks[]> = ref([]);
+const dashboardNavigation: Ref<TNavigationLinks[]> = ref([]);
 
 navigationLinkNames.forEach((name: string) => {
   dashboardNavigation.value.push({

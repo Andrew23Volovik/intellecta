@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { ComputedRef } from 'vue';
-import type { ClassesRecord } from '@/types/types';
-import type { ButtonProps, ButtonSizes } from '@/types/components/MclButton';
+import type { TClassesRecord } from '@/types/types';
+import type { TButtonProps, TButtonSizes } from '@/types/components/MclButton';
 import { computed } from 'vue';
 
-const props = withDefaults(defineProps<ButtonProps>(), {
+const props = withDefaults(defineProps<TButtonProps>(), {
   iconBtn: false,
   size: 'default',
   type: 'button',
@@ -48,30 +48,30 @@ const createRipple = ({ currentTarget, clientX, clientY }: MouseEvent): void => 
   }, rippleTiming);
 };
 
-const darkClasses: ClassesRecord = {
+const darkClasses: TClassesRecord = {
   'dark:text-light-6': true,
   'dark:bg-amber-6': true,
   'dark:hover:bg-amber-6/75': true,
   'dark:shadow-amber-6/25': true,
 };
 
-const lightClasses: ClassesRecord = {
+const lightClasses: TClassesRecord = {
   'text-light-6': true,
   'bg-amber-6': true,
   'hover:bg-amber-6/75': true,
   'shadow-amber-6/25': true,
 };
 
-const roundDefaultClasses: ClassesRecord = {
+const roundDefaultClasses: TClassesRecord = {
   'rounded-full': true,
   'p-2': true,
 };
 
-const createSizeClass = (size: ButtonSizes): ClassesRecord => {
+const createSizeClass = (size: TButtonSizes): TClassesRecord => {
   return { [`w-${size}`]: true, [`h-${size}`]: true };
 };
 
-const resultClasses: ComputedRef<(string | ClassesRecord)[]> = computed(() => {
+const resultClasses: ComputedRef<(string | TClassesRecord)[]> = computed(() => {
   return [
     props.iconBtn ? roundDefaultClasses : '',
     props.size === 'x-small' && props.iconBtn ? createSizeClass(8) : '',

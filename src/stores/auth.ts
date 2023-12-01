@@ -1,10 +1,10 @@
 import type { AuthError } from '@supabase/supabase-js';
 import type { StoreDefinition } from 'pinia';
-import type { IAuthStoreActions, IAuthUser, AuthStoreState, AuthStoreGetters } from '@/types/types';
+import type { TAuthStoreActions, TAuthUser, TAuthStoreState, TAuthStoreGetters } from '@/types/types';
 import { defineStore } from 'pinia';
 import { supabase } from '@/lib/supabase';
 
-export const useAuthStore: StoreDefinition<'auth', AuthStoreState, AuthStoreGetters, IAuthStoreActions> = defineStore(
+export const useAuthStore: StoreDefinition<'auth', TAuthStoreState, TAuthStoreGetters, TAuthStoreActions> = defineStore(
   'auth',
   {
     state() {
@@ -12,7 +12,7 @@ export const useAuthStore: StoreDefinition<'auth', AuthStoreState, AuthStoreGett
     },
     getters: {},
     actions: {
-      async supabaseUserSingUp({ email, password, firstName, lastName }: IAuthUser): Promise<AuthError | undefined> {
+      async supabaseUserSingUp({ email, password, firstName, lastName }: TAuthUser): Promise<AuthError | undefined> {
         try {
           const { error }: { error: AuthError | null } = await supabase.auth.signUp({
             email: email,
@@ -33,7 +33,7 @@ export const useAuthStore: StoreDefinition<'auth', AuthStoreState, AuthStoreGett
       async supabaseUserSingIn({
         email,
         password,
-      }: Omit<IAuthUser, 'firstName' | 'lastName'>): Promise<AuthError | undefined> {
+      }: Omit<TAuthUser, 'firstName' | 'lastName'>): Promise<AuthError | undefined> {
         try {
           const { error }: { error: AuthError | null } = await supabase.auth.signInWithPassword({
             email: email,

@@ -1,3 +1,5 @@
+import type { User } from '@supabase/supabase-js';
+
 export interface IRouteError {
   statusCode: number;
   context?: string;
@@ -23,6 +25,10 @@ export type TUserResponseDto<T> = {
   role: 'assistant';
   content: T;
 };
+
+export interface ExtendedUser extends User {
+  apiCount: number;
+}
 
 export type TApiError = {
   message: string;

@@ -1,13 +1,13 @@
-import type { AuthError } from '@supabase/supabase-js';
+import type { AuthError, Session } from '@supabase/supabase-js';
 
-export type ClassesRecord = Record<string, boolean>;
+export type TClassesRecord = Record<string, boolean>;
 
-export interface IAuthUser {
+export type TAuthUser = {
   email: string;
   password: string;
   firstName: string;
   lastName: string;
-}
+};
 
 export type TFormFieldValidations = {
   email: string | undefined;
@@ -19,14 +19,14 @@ export type TSearchValidations = {
   prompt: string | undefined;
 };
 
-export type AuthStoreState = Record<any, never>;
-export type AuthStoreGetters = Record<any, never>;
+export type TAuthStoreState = Record<any, never>;
+export type TAuthStoreGetters = Record<any, never>;
 
-export interface IAuthStoreActions {
-  supabaseUserSingUp({ email, password }: IAuthUser): Promise<AuthError | undefined>;
-  supabaseUserSingIn({ email, password }: Omit<IAuthUser, 'firstName' | 'lastName'>): Promise<AuthError | undefined>;
+export type TAuthStoreActions = {
+  supabaseUserSingUp(user: TAuthUser): Promise<AuthError | undefined>;
+  supabaseUserSingIn(user: Omit<TAuthUser, 'firstName' | 'lastName'>): Promise<AuthError | undefined>;
   supabaseUserSingInWithOAuth(type: 'google' | 'github'): Promise<AuthError | undefined>;
-}
+};
 
 export type TChatRoles = 'user' | 'assistant' | 'system';
 export type TChatImage = {
@@ -57,6 +57,7 @@ export function isBaseError(data: TBaseError): data is TBaseError {
 }
 
 export type TAIStoreState = {
+  accessToken: string;
   conversationChat: TChatMessage<string>[];
   imageChat: TChatMessage<TChatImage[] | string>[];
   videoChat: TChatMessage<string[] | string>[];
@@ -67,16 +68,46 @@ export type TAIStoreState = {
 
 export type TAIStoreGetters = {
   getConversationChat: (state: TAIStoreState) => TChatMessage<string>[];
-  getImageChat: (store: TAIStoreState) => TChatMessage<TChatImage[] | string>[];
-  getVideoChat: (store: TAIStoreState) => TChatMessage<string[] | string>[];
-  getMusicChat: (store: TAIStoreState) => TChatMessage<TChatMusic | string>[];
-  getCodeChat: (store: TAIStoreState) => TChatMessage<string>[];
+  getImageChat: (state: TAIStoreState) => TChatMessage<TChatImage[] | string>[];
+  getVideoChat: (state: TAIStoreState) => TChatMessage<string[] | string>[];
+  getMusicChat: (state: TAIStoreState) => TChatMessage<TChatMusic | string>[];
+  getCodeChat: (state: TAIStoreState) => TChatMessage<string>[];
 };
 
 export type TAIStoreActions = {
+  setAccessToken(token: string): void;
+  updateApi(): Promise<void>;
   generateConversation(message: TChatMessage<string>): Promise<Error | undefined>;
   generateImage(message: TImageGenerateMessage): Promise<Error | undefined>;
   generateVideo(message: TChatMessage<string>): Promise<Error | undefined>;
   generateMusic(message: TChatMessage<string>): Promise<Error | undefined>;
   generateCode(message: TChatMessage<string>): Promise<Error | undefined>;
+};
+
+export type TUserState = {
+  supabaseSession: Session | null;
+  apiCount: number;
+};
+
+export type TUserGetters = {
+  getSupabaseSession: (state: TUserState) => Session | null;
+  getApiCount: (state: TUserState) => number;
+};
+
+export type TUserActions = {
+  setSupabaseSession(session: Session): void;
+  initSupabaseSession(): Promise<() => void>;
+  updateApiCount(): Promise<void>;
+  userApiLimit(): Promise<void>;
+};
+
+export type TModalState = {
+  isOpen: boolean;
+};
+
+export type TModalGetters = Record<any, any>;
+
+export type TModalActions = {
+  onOpen(): void;
+  onClose(): void;
 };

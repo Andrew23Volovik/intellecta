@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Ref } from 'vue';
+
 import { onMounted, ref } from 'vue';
 import { useSwipe } from '@/composables/useSwipe';
 import { useRoute, useRouter } from 'vue-router';

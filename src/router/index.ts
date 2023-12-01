@@ -78,9 +78,9 @@ const router = createRouter({
   ],
 });
 
-router.beforeEach(async (to, from, next): Promise<void> => {
-  removeHash(to, next);
-  await authGuard(to, next);
-});
+// router.beforeEach(async (to, from, next): Promise<void> => {
+//   removeHash(to, next);
+//   await authGuard(to, next);
+// });
 
 export default router;

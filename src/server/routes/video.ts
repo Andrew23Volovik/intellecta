@@ -1,8 +1,9 @@
 import type { NextFunction, Request, Response } from 'express';
-import type { TUserRequestDto, TUserResponseDto } from '../serverTypes';
+import type { TUserRequestDto, TUserResponseDto } from '../types';
 import { Router } from 'express';
-import { isApiError, RouteError } from '../serverTypes';
+import { isApiError, RouteError } from '../types';
 import { replicate } from '../replicateAPI';
+import { checkApiLimit, incrementApiLimit } from '../utils/index';
 
 export const videoRouter = Router();
 
@@ -15,6 +16,7 @@ videoRouter.post(
     res: Response<TUserResponseDto<string[]> | RouteError | string, any>,
     next: NextFunction,
   ) => {
+    const user = res.locals.user;
     const { prompt } = req.body;
 
     if (!replicate.auth) {
@@ -25,10 +27,16 @@ videoRouter.post(
       next(new RouteError(400, 'Prompt is required.'));
     }
 
+    const freeTrial = await checkApiLimit(user.id);
+    if (!freeTrial) next(new RouteError(403, 'Free trial has expired. Please upgrade to pro.'));
+
     try {
       const data = await replicate.run(baseInstructionVideo, {
         input: { prompt },
       });
+
+      await incrementApiLimit(user.id);
+
       return res.status(200).json({
         role: 'assistant',
         content: data,

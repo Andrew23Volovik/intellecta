@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import MclButton from '@/components/UI/MclButton.vue';
 import MclInput from '@/components/UI/MclInput.vue';
+
 import type { TInputSearchProps } from '@/types/components/MclInputSearch';
+
 import { useSlots } from 'vue';
 
-const props = defineProps<TInputSearchProps>();
+defineProps<TInputSearchProps>();
 
 const slots = useSlots();
 

@@ -10,10 +10,12 @@ import type {
 import type { StoreDefinition } from 'pinia';
 import { defineStore } from 'pinia';
 import { isBaseError } from '@/types/types';
+import { useUserStore } from '@/stores/user';
 
 export const useAIStore: StoreDefinition<'AI', TAIStoreState, TAIStoreGetters, TAIStoreActions> = defineStore('AI', {
   state(): TAIStoreState {
     return {
+      accessToken: '',
       conversationChat: [],
       imageChat: [],
       videoChat: [],
@@ -30,12 +32,20 @@ export const useAIStore: StoreDefinition<'AI', TAIStoreState, TAIStoreGetters, T
     getCodeChat: (state: TAIStoreState): TChatMessage<string>[] => state.codeChat,
   },
   actions: {
+    setAccessToken(token: string): void {
+      this.accessToken = token;
+    },
+    updateApi(): Promise<void> {
+      const { updateApiCount } = useUserStore();
+      return updateApiCount();
+    },
     async generateConversation(message: TChatMessage<string>): Promise<Error | undefined> {
       try {
         const response = await fetch('http://localhost:3000/api/conversation', {
           method: 'POST',
           headers: {
             'Content-type': 'application/json',
+            Authorization: `Bearer ${this.accessToken}`,
           },
           body: JSON.stringify({
             prompt: message.content,
@@ -66,6 +76,8 @@ export const useAIStore: StoreDefinition<'AI', TAIStoreState, TAIStoreGetters, T
           const currObj = this.conversationChat[this.conversationChat.length - 1];
           currObj.content += value;
         }
+
+        await this.updateApi();
       } catch (e) {
         console.log(e);
       }
@@ -76,6 +88,7 @@ export const useAIStore: StoreDefinition<'AI', TAIStoreState, TAIStoreGetters, T
           method: 'POST',
           headers: {
             'Content-type': 'application/json',
+            Authorization: `Bearer ${this.accessToken}`,
           },
           body: JSON.stringify({
             prompt: message,
@@ -88,6 +101,8 @@ export const useAIStore: StoreDefinition<'AI', TAIStoreState, TAIStoreGetters, T
         }
 
         this.imageChat.push(data as TChatMessage<TChatImage[]>);
+
+        await this.updateApi();
       } catch (e) {
         console.log(e);
       }
@@ -98,6 +113,7 @@ export const useAIStore: StoreDefinition<'AI', TAIStoreState, TAIStoreGetters, T
           method: 'POST',
           headers: {
             'Content-type': 'application/json',
+            Authorization: `Bearer ${this.accessToken}`,
           },
           body: JSON.stringify({
             prompt: message.content,
@@ -110,6 +126,8 @@ export const useAIStore: StoreDefinition<'AI', TAIStoreState, TAIStoreGetters, T
         }
 
         this.videoChat.push(data as TChatMessage<string[]>);
+
+        await this.updateApi();
       } catch (e) {
         console.log(e);
       }
@@ -120,6 +138,7 @@ export const useAIStore: StoreDefinition<'AI', TAIStoreState, TAIStoreGetters, T
           method: 'POST',
           headers: {
             'Content-type': 'application/json',
+            Authorization: `Bearer ${this.accessToken}`,
           },
           body: JSON.stringify({
             prompt: message.content,
@@ -132,6 +151,8 @@ export const useAIStore: StoreDefinition<'AI', TAIStoreState, TAIStoreGetters, T
         }
 
         this.musicChat.push(data as TChatMessage<TChatMusic>);
+
+        await this.updateApi();
       } catch (e) {
         console.log(e);
       }
@@ -142,6 +163,7 @@ export const useAIStore: StoreDefinition<'AI', TAIStoreState, TAIStoreGetters, T
           method: 'POST',
           headers: {
             'Content-type': 'application/json',
+            Authorization: `Bearer ${this.accessToken}`,
           },
           body: JSON.stringify({
             prompt: message.content,
@@ -172,6 +194,8 @@ export const useAIStore: StoreDefinition<'AI', TAIStoreState, TAIStoreGetters, T
           const currObj = this.codeChat[this.codeChat.length - 1];
           currObj.content += value;
         }
+
+        await this.updateApi();
       } catch (e) {
         console.log(e);
       }

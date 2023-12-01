@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { TCardProps } from '@/types/components/MclCard';
-import type { ClassesRecord } from '@/types/types';
+import type { TClassesRecord } from '@/types/types';
 import type { ComputedRef } from 'vue';
 import { computed } from 'vue';
 
@@ -11,15 +11,15 @@ const props = withDefaults(defineProps<TCardProps>(), {
   customClass: '',
 });
 
-const darkClasses: ClassesRecord = {
+const darkClasses: TClassesRecord = {
   'dark:bg-dark-3': true,
 };
 
-const lightClasses: ClassesRecord = {
+const lightClasses: TClassesRecord = {
   'bg-light-6': true,
 };
 
-const linkClasses: ClassesRecord = {
+const linkClasses: TClassesRecord = {
   'hover:bg-light-7': true,
   'hover:border-truegray-4': true,
   'hover:dark:bg-dark-2': true,
@@ -27,7 +27,7 @@ const linkClasses: ClassesRecord = {
   'cursor-pointer': true,
 };
 
-const outlineClasses: ClassesRecord = {
+const outlineClasses: TClassesRecord = {
   'dark:border-truegray-6': true,
   'border-truegray-3': true,
   border: true,
@@ -40,7 +40,7 @@ const paddingMap: Map<number, string> = new Map([
   [12, 'p-12'],
 ]);
 
-const resultClasses: ComputedRef<(string | ClassesRecord)[]> = computed(() => {
+const resultClasses: ComputedRef<(string | TClassesRecord)[]> = computed(() => {
   return [
     props.padding ? (paddingMap.get(parseInt(props.padding)) as string) : '',
     props.link ? linkClasses : '',

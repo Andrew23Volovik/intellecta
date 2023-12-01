@@ -1,9 +1,9 @@
-export type ButtonSizes = 8 | 10 | 12 | 13 | 16;
+export type TButtonSizes = 8 | 10 | 12 | 13 | 16;
 
-export type ButtonNames = 'x-small' | 'small' | 'default' | 'large' | 'x-large';
+export type TButtonNames = 'x-small' | 'small' | 'default' | 'large' | 'x-large';
 
-export type ButtonProps = {
+export type TButtonProps = {
   iconBtn?: boolean;
-  size?: ButtonNames;
+  size?: TButtonNames;
   type?: 'button' | 'submit' | 'reset';
 };

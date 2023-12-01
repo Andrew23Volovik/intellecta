@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import IconArrowBottom from '@/components/icons/IconArrowBottom.vue';
+
 import type { TSelectProps } from '@/types/components/MclSelect';
 import type { Ref } from 'vue';
+
 import { computed, ref } from 'vue';
 
 defineProps<TSelectProps>();

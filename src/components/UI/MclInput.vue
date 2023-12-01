@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import IconClose from '@/components/icons/IconClose.vue';
+
 import type { ComputedRef } from 'vue';
 import type { TInputProps } from '@/types/components/MclInput';
-import type { ClassesRecord } from '@/types/types';
+import type { TClassesRecord } from '@/types/types';
+
 import { computed, ref, useSlots } from 'vue';
-import IconClose from '@/components/icons/IconClose.vue';
 
 const props = withDefaults(defineProps<TInputProps>(), {
   type: 'text',
@@ -21,7 +23,7 @@ const modelValue = defineModel<string>();
 
 const slots = useSlots();
 
-const darkClasses: ClassesRecord = {
+const darkClasses: TClassesRecord = {
   'dark:bg-dark-3': true,
   'dark:border-truegray-5': true,
   'dark:text-light-6': true,
@@ -29,7 +31,7 @@ const darkClasses: ClassesRecord = {
   'dark:focus:border-amber-6/75': true,
 };
 
-const lightClasses: ClassesRecord = {
+const lightClasses: TClassesRecord = {
   'bg-neutral-2': true,
   'border-truegray-4': true,
   'text-truegray-8': true,
@@ -37,7 +39,7 @@ const lightClasses: ClassesRecord = {
   'focus:border-amber-6/75': true,
 };
 
-const resultClasses: ComputedRef<(string | ClassesRecord)[]> = computed(() => {
+const resultClasses: ComputedRef<(string | TClassesRecord)[]> = computed(() => {
   return [slots.leftIcon ? 'pl-10' : '', props.error ? 'error' : ''];
 });
 

@@ -2,11 +2,12 @@
 import MclCard from '@/components/UI/MclCard.vue';
 import IntellectaLogo from '@/components/icons/IntellectaLogo.vue';
 import IconLoader from '@/components/icons/IconLoader.vue';
+import MclButton from '@/components/UI/MclButton.vue';
 
 import type { TChatLayoutProps } from '@/types/components/MclChatLayout';
 import type { Ref, ComponentPublicInstance } from 'vue';
+
 import { watch, ref } from 'vue';
-import MclButton from '@/components/UI/MclButton.vue';
 
 defineProps<TChatLayoutProps>();
 defineEmits<{

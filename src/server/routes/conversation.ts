@@ -1,8 +1,9 @@
 import type { NextFunction, Request, Response } from 'express';
-import type { TUserRequestDto, TUserResponseDto } from '../serverTypes';
+import type { TUserRequestDto, TUserResponseDto } from '../types';
 import { Router } from 'express';
-import { isApiError, RouteError } from '../serverTypes';
+import { isApiError, RouteError } from '../types';
 import { openAI } from '../openaiAPI';
+import { checkApiLimit, incrementApiLimit } from '../utils/index';
 
 export const conversationRouter = Router();
 
@@ -17,6 +18,7 @@ conversationRouter.post(
     res: Response<TUserResponseDto<string> | RouteError | string, any>,
     next: NextFunction,
   ) => {
+    const user = res.locals.user;
     const { prompt } = req.body;
 
     if (!openAI.apiKey) {
@@ -26,6 +28,9 @@ conversationRouter.post(
     if (!prompt) {
       next(new RouteError(400, 'Prompt is required.'));
     }
+
+    const freeTrial = await checkApiLimit(user.id);
+    if (!freeTrial) next(new RouteError(403, 'Free trial has expired. Please upgrade to pro.'));
 
     try {
       const completion = await openAI.chat.completions.create({
@@ -43,6 +48,8 @@ conversationRouter.post(
       res.writeHead(200, {
         'Content-Type': 'text/plain; charset=utf-8',
       });
+
+      await incrementApiLimit(user.id);
 
       for await (const chunk of completion) {
         const [choice] = chunk.choices;

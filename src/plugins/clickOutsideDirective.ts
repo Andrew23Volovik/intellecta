@@ -10,9 +10,9 @@ export default {
         binding.value(event);
       }
     };
-    document.addEventListener('click', el.clickOutsideEvent);
+    document.addEventListener('mouseup', el.clickOutsideEvent);
   },
   unmounted(el: HTMLClickOutsideEvent): void {
-    document.removeEventListener('click', el.clickOutsideEvent);
+    document.removeEventListener('mouseup', el.clickOutsideEvent);
   },
 } satisfies Directive;
