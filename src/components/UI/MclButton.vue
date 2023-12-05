@@ -10,7 +10,7 @@ const props = withDefaults(defineProps<TButtonProps>(), {
   type: 'button',
 });
 
-defineEmits<{
+const emits = defineEmits<{
   (e: 'click'): void;
 }>();
 
@@ -86,7 +86,7 @@ const resultClasses: ComputedRef<(string | TClassesRecord)[]> = computed(() => {
 <template>
   <button
     :type="props.type"
-    @click="$emit('click', $event), createRipple($event)"
+    @click="emits('click'), createRipple($event)"
     class="btn"
     :class="[darkClasses, lightClasses, resultClasses]"
   >
