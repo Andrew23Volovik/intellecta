@@ -8,10 +8,23 @@ import { router } from './routes/index';
 const app: Application = express();
 app.use(cors());
 
-app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use('/api/webhook', express.raw({ type: 'application/json' }));
+app.use(express.json());
 
-app.use(userHandler);
+app.use(
+  [
+    '/api/user',
+    '/api/conversation',
+    '/api/images',
+    '/api/video',
+    '/api/music',
+    '/api/code',
+    '/api/stripe',
+    '/api/stripe-check-status',
+  ],
+  userHandler,
+);
 app.use('/api', router);
 
 app.use(errorHandler);

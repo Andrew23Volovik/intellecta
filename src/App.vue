@@ -33,7 +33,16 @@ navigationLinkNames.slice(0, navigationLinkNames.length - 1).forEach((name: stri
 const { $patch } = useAIStore();
 $patch({ init: true });
 
-const { initSupabaseSession } = useUserStore();
+const { initSupabaseSession, stripeSubscription } = useUserStore();
+
+const upgrade = async () => {
+  const data = await stripeSubscription();
+
+  if ('url' in data) {
+    window.location.href = data.url;
+  }
+};
+
 let unsubscribe: () => void;
 initSupabaseSession().then((fn) => (unsubscribe = fn));
 
@@ -83,7 +92,10 @@ onUnmounted(() => unsubscribe());
       </ul>
     </template>
     <template #footer>
-      <MclButton class="w-full bg-gradient-to-r from-violet-8 to-amber-6 hover:from-violet-7 hover:to-amber-5">
+      <MclButton
+        class="w-full bg-gradient-to-r from-violet-8 to-amber-6 hover:from-violet-7 hover:to-amber-5"
+        @click="upgrade"
+      >
         <template #icon-left>
           <IconLightning class="w-6 h-6 text-light-6" />
         </template>
@@ -104,5 +116,15 @@ onUnmounted(() => unsubscribe());
 a {
   color: black;
   text-decoration: none;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

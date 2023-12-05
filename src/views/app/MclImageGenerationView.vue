@@ -16,6 +16,8 @@ import { defineAsyncComponent, ref } from 'vue';
 import { useForm } from 'vee-validate';
 import { object, ObjectSchema, string } from 'yup';
 import { useAIStore } from '@/stores/artificialIntelligence';
+import { BaseError, isBaseError } from '@/server/types';
+import { useModal } from '@/stores/modal';
 
 const imageHeadingData: THeadingProps = {
   title: 'Image Generation',
@@ -38,6 +40,7 @@ const { defineComponentBinds, handleSubmit, errors, setErrors } = useForm({
 const promptValidation = defineComponentBinds('prompt');
 
 const store = useAIStore();
+const modalStore = useModal();
 const isLoading = ref(false);
 const onSuccess = async () => {
   try {
@@ -54,10 +57,13 @@ const onSuccess = async () => {
 
     isLoading.value = true;
     prompt.value = '';
-    await store.generateImage(userMessage);
+    const data = await store.generateImage(userMessage);
     isLoading.value = false;
+
+    if (isBaseError(data)) throw new BaseError(data.statusCode, data.message);
   } catch (e) {
-    if (e instanceof Error) {
+    if (e instanceof BaseError) {
+      if (e.statusCode === 403) modalStore.onOpen();
       setErrors({
         prompt: e.message,
       });

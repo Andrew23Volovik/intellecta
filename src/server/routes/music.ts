@@ -1,9 +1,9 @@
 import type { NextFunction, Request, Response } from 'express';
 import type { TUserRequestDto, TUserResponseDto } from '../types';
 import { Router } from 'express';
-import { isApiError, RouteError } from '../types';
+import { isApiError, BaseError } from '../types';
 import { replicate } from '../replicateAPI';
-import { checkApiLimit, incrementApiLimit } from '../utils/index';
+import { checkApiLimit, checkSubscription, incrementApiLimit } from '../utils/index';
 
 export const musicRouter = Router();
 
@@ -12,22 +12,23 @@ musicRouter.post(
   '/music',
   async (
     req: Request<any, any, TUserRequestDto<string>, any, any>,
-    res: Response<TUserResponseDto<string[]> | RouteError | string, any>,
+    res: Response<TUserResponseDto<string[]> | BaseError | string, any>,
     next: NextFunction,
   ) => {
     const user = res.locals.user;
     const { prompt } = req.body;
 
     if (!replicate.auth) {
-      next(new RouteError(500, 'Replicate API Key not configured.'));
+      next(new BaseError(500, 'Replicate API Key not configured.'));
     }
 
     if (!prompt) {
-      next(new RouteError(400, 'Prompt is required.'));
+      next(new BaseError(400, 'Prompt is required.'));
     }
 
     const freeTrial = await checkApiLimit(user.id);
-    if (!freeTrial) next(new RouteError(403, 'Free trial has expired. Please upgrade to pro.'));
+    const isPro = await checkSubscription(user.id);
+    if (!freeTrial && !isPro) next(new BaseError(403, 'Free trial has expired. Please upgrade to pro.'));
 
     try {
       const data = await replicate.run(baseInstructionMusic, {
@@ -41,10 +42,10 @@ musicRouter.post(
         content: data,
       } as TUserResponseDto<string[]>);
     } catch (err) {
-      if (err instanceof RouteError) {
-        next(new RouteError(err.statusCode, err.message));
+      if (err instanceof BaseError) {
+        next(new BaseError(err.statusCode, err.message));
       } else if (isApiError(err)) {
-        next(new RouteError(err.response.status, err.message));
+        next(new BaseError(err.response.status, err.message));
       }
     }
   },

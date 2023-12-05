@@ -8,6 +8,8 @@ import StepsizqIcon from '@/components/icons/landing/StepsizqIcon.vue';
 import HandlessIcon from '@/components/icons/landing/HandlessIcon.vue';
 import MclButton from '@/components/UI/MclButton.vue';
 import MclCard from '@/components/UI/MclCard.vue';
+import MclThemeSwitcher from '@/components/UI/MclThemeSwitcher.vue';
+import { useRouter } from 'vue-router';
 
 const landingIcons = [
   {
@@ -35,6 +37,8 @@ const landingIcons = [
     comp: HandlessIcon,
   },
 ];
+
+const router = useRouter();
 </script>
 
 <template>
@@ -52,7 +56,16 @@ const landingIcons = [
           <IntellectaLogo class="text-amber-6 h-10 w-10 md:h-16 md:w-16" />
           <h2 class="text-light-6 text-2xl tracking-wide hidden sm:block md:text-4xl">Intellecta</h2>
         </RouterLink>
-        <MclButton class="w-48">Get Started</MclButton>
+
+        <div class="flex items-center gap-4">
+          <MclButton
+            class="w-48"
+            @click="router.push({ name: 'Auth' })"
+          >
+            Get Started
+          </MclButton>
+          <MclThemeSwitcher />
+        </div>
       </nav>
     </header>
     <main class="bg-neutral-2 dark:bg-dark-5 flex flex-col justify-center items-center gap-16 py-16">
@@ -69,12 +82,18 @@ const landingIcons = [
         forefront. Whether you're a passionate tech aficionado, a curious explorer, or a forward-thinking business
         leader, you've arrived at the nexus of AI's limitless potential. 🚀
       </p>
-      <MclButton class="w-72"> Start Generating For Free </MclButton>
+      <MclButton
+        class="w-72"
+        @click="router.push({ name: 'Dashboard' })"
+      >
+        Start Generating For Free
+      </MclButton>
       <div class="grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-4 lg:grid-cols-3 xl:grid-cols-6">
         <MclCard
           class="flex justify-center items-center gap-4"
           v-for="({ title, comp }, idx) in landingIcons"
           :key="idx"
+          outline
         >
           <Component
             :is="comp"

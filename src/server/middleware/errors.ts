@@ -1,10 +1,13 @@
 import type { NextFunction, Request, Response } from 'express';
-import { RouteError } from '../types';
+import type { IBaseError } from '../types';
+import { BaseError } from '../types';
 
-export const errorHandler = (err: Error, req: Request, res: Response<{ error: string }, any>, next: NextFunction) => {
-  if (err instanceof RouteError) {
+export const errorHandler = (err: Error, req: Request, res: Response<IBaseError, any>, next: NextFunction) => {
+  if (err instanceof BaseError) {
     return res.status(err.statusCode).json({
-      error: err.message,
+      statusCode: err.statusCode,
+      message: err.message,
+      context: err.context,
     });
   }
 };

@@ -13,6 +13,8 @@ import { defineAsyncComponent, ref } from 'vue';
 import { useForm } from 'vee-validate';
 import { object, ObjectSchema, string } from 'yup';
 import { useAIStore } from '@/stores/artificialIntelligence';
+import { useModal } from '@/stores/modal';
+import { BaseError, isBaseError } from '@/server/types';
 
 const codeHeadingData: THeadingProps = {
   title: 'Code Generation',
@@ -30,6 +32,7 @@ const { defineComponentBinds, handleSubmit, errors, setErrors } = useForm({
 const searchValidation = defineComponentBinds('prompt');
 
 const store = useAIStore();
+const modalStore = useModal();
 const isLoading = ref(false);
 const onSuccess = async () => {
   try {
@@ -44,11 +47,10 @@ const onSuccess = async () => {
     const data = await store.generateCode(userMessage);
     isLoading.value = false;
 
-    if (data instanceof Error) {
-      throw new Error(data.message);
-    }
+    if (isBaseError(data)) throw new BaseError(data.statusCode, data.message);
   } catch (e) {
-    if (e instanceof Error) {
+    if (e instanceof BaseError) {
+      if (e.statusCode === 403) modalStore.onOpen();
       setErrors({
         prompt: e.message,
       });

@@ -28,7 +28,7 @@ export const checkApiLimit = async (userId: string): Promise<boolean> => {
   return !userApiLimit || userApiLimit.count < MAX_COUNT;
 };
 
-export const getApiLimitCount = async (userId: string) => {
+export const getApiLimitCount = async (userId: string): Promise<number> => {
   const userApiLimit = await prisma.userApiLimit.findUnique({
     where: {
       userId,
@@ -36,4 +36,27 @@ export const getApiLimitCount = async (userId: string) => {
   });
 
   return !userApiLimit ? 0 : userApiLimit.count;
+};
+
+const DAY_IN_MS = 86_400_000;
+
+export const checkSubscription = async (userId: string) => {
+  const userSubscription = await prisma.userSubscription.findUnique({
+    where: {
+      userId,
+    },
+    select: {
+      stripeSubscriptionId: true,
+      stripeCurrentPeriodEnd: true,
+      stripeCustomerId: true,
+      stripePriceId: true,
+    },
+  });
+
+  if (!userSubscription) return false;
+
+  const isValid =
+    userSubscription.stripePriceId && userSubscription.stripeCurrentPeriodEnd!.getTime() + DAY_IN_MS > Date.now();
+
+  return !!isValid;
 };

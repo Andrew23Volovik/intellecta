@@ -27,6 +27,7 @@ navigationLinkNames.forEach((name: string) => {
 
 const store = useUserStore();
 store.userApiLimit();
+store.stripeCheckSubscriptionStatus();
 
 const progress: ComputedRef<number> = computed(() => {
   if (store.supabaseSession) {
@@ -34,9 +35,6 @@ const progress: ComputedRef<number> = computed(() => {
   }
   return 0;
 });
-const test = () => {
-  storeModal.onOpen();
-};
 </script>
 
 <template>
@@ -68,22 +66,30 @@ const test = () => {
         </ul>
       </nav>
     </div>
-    <div class="border border-t-solid border-truegray-5 dark:border-truegray-6 p-4 xl:p-8">
-      <p class="text-center text-light-6 text-sm font-500 mb-2">{{ store.getApiCount }} / {{ MAX_COUNT }}</p>
-      <MclProgress
-        class="mb-4"
-        v-model="progress"
-      />
-      <MclButton
-        class="m-a w-full bg-gradient-to-r from-violet-8 to-amber-6 hover:from-violet-7 hover:to-amber-5"
-        @click="test"
+    <Transition
+      name="fade"
+      mode="out-in"
+    >
+      <div
+        class="border border-t-solid border-truegray-5 dark:border-truegray-6 p-4 xl:p-8"
+        v-if="!store.isUpgrade"
       >
-        <template #icon-left>
-          <IconLightning class="text-light-6 w-6 h-6" />
-        </template>
-        Upgrade
-      </MclButton>
-    </div>
+        <p class="text-center text-light-6 text-sm font-500 mb-2">{{ store.getApiCount }} / {{ MAX_COUNT }}</p>
+        <MclProgress
+          class="mb-4"
+          v-model="progress"
+        />
+        <MclButton
+          class="m-a w-full bg-gradient-to-r from-violet-8 to-amber-6 hover:from-violet-7 hover:to-amber-5"
+          @click="storeModal.onOpen()"
+        >
+          <template #icon-left>
+            <IconLightning class="text-light-6 w-6 h-6" />
+          </template>
+          Upgrade
+        </MclButton>
+      </div>
+    </Transition>
   </aside>
 </template>
 

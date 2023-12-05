@@ -9,8 +9,8 @@ import type {
 } from '@/types/types';
 import type { StoreDefinition } from 'pinia';
 import { defineStore } from 'pinia';
-import { isBaseError } from '@/types/types';
 import { useUserStore } from '@/stores/user';
+import { BaseError, isBaseError } from '@/server/types';
 
 export const useAIStore: StoreDefinition<'AI', TAIStoreState, TAIStoreGetters, TAIStoreActions> = defineStore('AI', {
   state(): TAIStoreState {
@@ -54,9 +54,7 @@ export const useAIStore: StoreDefinition<'AI', TAIStoreState, TAIStoreGetters, T
 
         if (response.headers.get('content-type')?.includes('application/json')) {
           const data = await response.json();
-          if (isBaseError(data)) {
-            return new Error(data.error);
-          }
+          if (isBaseError(data)) return new BaseError(data.statusCode, data.message);
         }
 
         this.conversationChat.push({
@@ -96,9 +94,7 @@ export const useAIStore: StoreDefinition<'AI', TAIStoreState, TAIStoreGetters, T
         });
 
         const data = await response.json();
-        if (isBaseError(data)) {
-          return new Error(data.error);
-        }
+        if (isBaseError(data)) return new BaseError(data.statusCode, data.message);
 
         this.imageChat.push(data as TChatMessage<TChatImage[]>);
 
@@ -121,9 +117,7 @@ export const useAIStore: StoreDefinition<'AI', TAIStoreState, TAIStoreGetters, T
         });
 
         const data = await response.json();
-        if (isBaseError(data)) {
-          return new Error(data.error);
-        }
+        if (isBaseError(data)) return new BaseError(data.statusCode, data.message);
 
         this.videoChat.push(data as TChatMessage<string[]>);
 
@@ -146,9 +140,7 @@ export const useAIStore: StoreDefinition<'AI', TAIStoreState, TAIStoreGetters, T
         });
 
         const data = await response.json();
-        if (isBaseError(data)) {
-          return new Error(data.error);
-        }
+        if (isBaseError(data)) return new BaseError(data.statusCode, data.message);
 
         this.musicChat.push(data as TChatMessage<TChatMusic>);
 
@@ -172,9 +164,7 @@ export const useAIStore: StoreDefinition<'AI', TAIStoreState, TAIStoreGetters, T
 
         if (response.headers.get('content-type')?.includes('application/json')) {
           const data = await response.json();
-          if (isBaseError(data)) {
-            return new Error(data.error);
-          }
+          if (isBaseError(data)) return new BaseError(data.statusCode, data.message);
         }
 
         this.codeChat.push({

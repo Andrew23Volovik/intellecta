@@ -1,6 +1,6 @@
 import type { StoreDefinition } from 'pinia';
 import type { TUserState, TUserGetters, TUserActions } from '@/types/types';
-import type { Session } from '@supabase/supabase-js';
+import type { Session, User } from '@supabase/supabase-js';
 import { defineStore } from 'pinia';
 import type { ExtendedUser } from '@/server/types';
 import { useAIStore } from '@/stores/artificialIntelligence';
@@ -11,11 +11,14 @@ export const useUserStore: StoreDefinition<'user', TUserState, TUserGetters, TUs
     return {
       supabaseSession: null,
       apiCount: 0,
+      isUpgrade: true,
     };
   },
   getters: {
     getSupabaseSession: (state: TUserState): Session | null => state.supabaseSession,
     getApiCount: (state: TUserState): number => state.apiCount,
+    getIsUpgrade: (state: TUserState): boolean => state.isUpgrade,
+    getUser: (state: TUserState): User | undefined => state.supabaseSession?.user,
   },
   actions: {
     setSupabaseSession(session: Session): void {
@@ -39,6 +42,9 @@ export const useUserStore: StoreDefinition<'user', TUserState, TUserGetters, TUs
         authLisener?.subscription.unsubscribe();
       };
     },
+    async singOut(): Promise<void> {
+      await supabase.auth.signOut();
+    },
     async updateApiCount(): Promise<void> {
       await this.userApiLimit();
     },
@@ -57,6 +63,27 @@ export const useUserStore: StoreDefinition<'user', TUserState, TUserGetters, TUs
       } catch (e) {
         console.log(e);
       }
+    },
+    async stripeSubscription(): Promise<{ url: string }> {
+      const response = await fetch('http://localhost:3000/api/stripe', {
+        method: 'GET',
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${this.supabaseSession?.access_token}`,
+        },
+      });
+      const data = await response.json();
+      return data as { url: string };
+    },
+    async stripeCheckSubscriptionStatus(): Promise<void> {
+      const response = await fetch('http://localhost:3000/api/stripe-check-status', {
+        method: 'GET',
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${this.supabaseSession?.access_token}`,
+        },
+      });
+      this.isUpgrade = await response.json();
     },
   },
 });

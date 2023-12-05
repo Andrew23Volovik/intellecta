@@ -1,20 +1,27 @@
 import type { User } from '@supabase/supabase-js';
 
-export interface IRouteError {
+export interface IBaseError {
   statusCode: number;
+  message: string;
   context?: string;
 }
 
-export class RouteError extends Error implements IRouteError {
+export class BaseError extends Error implements IBaseError {
   statusCode: number;
+  message: string;
   context?: string;
-  constructor(statusCode: number, msg: string, context?: string) {
-    super(msg);
+  constructor(statusCode: number, message: string, context?: string) {
+    super(message);
     this.statusCode = statusCode;
+    this.message = message;
     this.context = context;
 
-    Object.setPrototypeOf(this, RouteError.prototype);
+    Object.setPrototypeOf(this, BaseError.prototype);
   }
+}
+
+export function isBaseError(err: any): err is BaseError {
+  return typeof err === 'object' && err !== null && 'statusCode' in err && 'message' in err;
 }
 
 export type TUserRequestDto<T> = {

@@ -1,4 +1,4 @@
-import type { AuthError, Session } from '@supabase/supabase-js';
+import type { AuthError, Session, User } from '@supabase/supabase-js';
 
 export type TClassesRecord = Record<string, boolean>;
 
@@ -48,14 +48,6 @@ export type TImageGenerateMessage = {
   size?: '256x256' | '512x512' | '1024x1024' | '1792x1024' | '1024x1792' | null;
 };
 
-export type TBaseError = {
-  error: string;
-};
-
-export function isBaseError(data: TBaseError): data is TBaseError {
-  return typeof data === 'object' && data !== null && 'error' in data;
-}
-
 export type TAIStoreState = {
   accessToken: string;
   conversationChat: TChatMessage<string>[];
@@ -87,18 +79,24 @@ export type TAIStoreActions = {
 export type TUserState = {
   supabaseSession: Session | null;
   apiCount: number;
+  isUpgrade: boolean;
 };
 
 export type TUserGetters = {
   getSupabaseSession: (state: TUserState) => Session | null;
   getApiCount: (state: TUserState) => number;
+  getIsUpgrade: (state: TUserState) => boolean;
+  getUser: (state: TUserState) => User | undefined;
 };
 
 export type TUserActions = {
   setSupabaseSession(session: Session): void;
   initSupabaseSession(): Promise<() => void>;
+  singOut(): Promise<void>;
   updateApiCount(): Promise<void>;
   userApiLimit(): Promise<void>;
+  stripeSubscription(): Promise<{ url: string }>;
+  stripeCheckSubscriptionStatus(): Promise<void>;
 };
 
 export type TModalState = {

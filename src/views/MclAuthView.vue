@@ -2,6 +2,7 @@
 import type { AsyncComponentLoader, Component, ComputedRef, Ref } from 'vue';
 import { computed, defineAsyncComponent, ref } from 'vue';
 import MclCard from '@/components/UI/MclCard.vue';
+import MclThemeSwitcher from '@/components/UI/MclThemeSwitcher.vue';
 
 interface AuthListComponents {
   singUp: Component;
@@ -34,7 +35,11 @@ const changeToSingInComp = (): void => {
 
 <template>
   <section class="h-full flex justify-center items-center dark:bg-dark-6 bg-neutral-2">
-    <MclCard class="w-64 sm:w-84">
+    <MclThemeSwitcher class="absolute top-0 right-0" />
+    <MclCard
+      class="w-64 sm:w-84"
+      outline
+    >
       <Transition
         name="slide-up"
         mode="out-in"
