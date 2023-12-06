@@ -51,7 +51,7 @@ export const useUserStore: StoreDefinition<'user', TUserState, TUserGetters, TUs
     async userApiLimit(): Promise<void> {
       const token = this.supabaseSession?.access_token;
       try {
-        const response = await fetch('http://localhost:3000/api/user', {
+        const response = await fetch('/api/user', {
           method: 'GET',
           headers: {
             'Content-type': 'application/json',
@@ -65,7 +65,7 @@ export const useUserStore: StoreDefinition<'user', TUserState, TUserGetters, TUs
       }
     },
     async stripeSubscription(): Promise<{ url: string }> {
-      const response = await fetch('http://localhost:3000/api/stripe', {
+      const response = await fetch('/api/stripe', {
         method: 'GET',
         headers: {
           'Content-type': 'application/json',
@@ -76,7 +76,7 @@ export const useUserStore: StoreDefinition<'user', TUserState, TUserGetters, TUs
       return data as { url: string };
     },
     async stripeCheckSubscriptionStatus(): Promise<void> {
-      const response = await fetch('http://localhost:3000/api/stripe-check-status', {
+      const response = await fetch('/api/stripe-check-status', {
         method: 'GET',
         headers: {
           'Content-type': 'application/json',
