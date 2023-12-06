@@ -9,8 +9,7 @@ import MclProgress from '@/components/UI/MclProgress.vue';
 
 import { ref, defineAsyncComponent, markRaw, computed } from 'vue';
 import { dashboardIconsMap } from '@/helpers/dashboardIconsMap';
-import { navigationLinkNames } from '@/const';
-import { MAX_COUNT } from '@/server/utils';
+import { MAX_COUNT, navigationLinkNames } from '@/const';
 import { useUserStore } from '@/stores/user';
 import { useModal } from '@/stores/modal';
 

@@ -13,7 +13,7 @@ import { defineAsyncComponent, ref } from 'vue';
 import { useForm } from 'vee-validate';
 import { object, ObjectSchema, string } from 'yup';
 import { useAIStore } from '@/stores/artificialIntelligence';
-import { BaseError, isBaseError } from '@/server/types';
+import { BaseError, isBaseError } from '@/types/types';
 import { useModal } from '@/stores/modal';
 
 const conversationHeadingData: THeadingProps = {

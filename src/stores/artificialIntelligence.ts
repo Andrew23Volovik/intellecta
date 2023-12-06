@@ -10,7 +10,7 @@ import type {
 import type { StoreDefinition } from 'pinia';
 import { defineStore } from 'pinia';
 import { useUserStore } from '@/stores/user';
-import { BaseError, isBaseError } from '@/server/types';
+import { BaseError, isBaseError } from '@/types/types';
 
 export const useAIStore: StoreDefinition<'AI', TAIStoreState, TAIStoreGetters, TAIStoreActions> = defineStore('AI', {
   state(): TAIStoreState {

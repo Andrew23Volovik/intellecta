@@ -14,7 +14,7 @@ import { useForm } from 'vee-validate';
 import { object, ObjectSchema, string } from 'yup';
 import { useAIStore } from '@/stores/artificialIntelligence';
 import { useModal } from '@/stores/modal';
-import { BaseError, isBaseError } from '@/server/types';
+import { BaseError, isBaseError } from '@/types/types';
 
 const codeHeadingData: THeadingProps = {
   title: 'Code Generation',

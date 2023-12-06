@@ -7,3 +7,5 @@ const CODE = 'Code';
 const SETTINGS = 'Settings';
 
 export const navigationLinkNames: string[] = [DASHBOARD, CONVERSATION, IMAGE, VIDEO, MUSIC, CODE, SETTINGS];
+
+export const MAX_COUNT = 5;

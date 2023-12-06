@@ -2,7 +2,7 @@ import type { StoreDefinition } from 'pinia';
 import type { TUserState, TUserGetters, TUserActions } from '@/types/types';
 import type { Session, User } from '@supabase/supabase-js';
 import { defineStore } from 'pinia';
-import type { ExtendedUser } from '@/server/types';
+import type { ExtendedUser } from '@/types/types';
 import { useAIStore } from '@/stores/artificialIntelligence';
 import { supabase } from '@/lib/supabase';
 
