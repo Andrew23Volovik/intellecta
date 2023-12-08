@@ -4,9 +4,12 @@ import MclAvatarDropdown from '@/components/UI/MclAvatarDropdown.vue';
 import { useUserStore } from '@/stores/user';
 import { useRouter } from 'vue-router';
 import MclThemeSwitcher from '@/components/UI/MclThemeSwitcher.vue';
+import { storeToRefs } from 'pinia';
 
 const store = useUserStore();
+const { firstName, lastName, email } = storeToRefs(store);
 const router = useRouter();
+
 const singOut = () => {
   store.singOut();
 
@@ -20,9 +23,9 @@ const singOut = () => {
   >
     <MclThemeSwitcher />
     <MclAvatarDropdown
-      :first-name="store.getUser!.user_metadata.firstName"
-      :last-name="store.getUser!.user_metadata.lastName"
-      :email="store.getUser!.email as string"
+      :first-name="firstName"
+      :last-name="lastName"
+      :email="email"
       class="p-2"
       @sing-out="singOut"
     />

@@ -11,7 +11,6 @@ import { useAIStore } from '@/stores/artificialIntelligence';
 import { useUserStore } from '@/stores/user';
 import { onUnmounted, defineAsyncComponent, markRaw, ref } from 'vue';
 import { navigationLinkNames } from '@/const';
-import { dashboardIconsMap } from '@/helpers/dashboardIconsMap';
 import { useModal } from '@/stores/modal';
 
 const storeModal = useModal();
@@ -26,7 +25,7 @@ const modalNavigation: Ref<
 navigationLinkNames.slice(0, navigationLinkNames.length - 1).forEach((name: string) => {
   modalNavigation.value.push({
     title: name,
-    icon: markRaw(defineAsyncComponent(() => import(dashboardIconsMap[name]))),
+    icon: markRaw(defineAsyncComponent(() => import('@' + `/components/icons/app/${name}Icon.vue`))),
   });
 });
 
@@ -46,7 +45,9 @@ const upgrade = async () => {
 let unsubscribe: () => void;
 initSupabaseSession().then((fn) => (unsubscribe = fn));
 
-onUnmounted(() => unsubscribe());
+onUnmounted(() => {
+  unsubscribe();
+});
 </script>
 
 <template>

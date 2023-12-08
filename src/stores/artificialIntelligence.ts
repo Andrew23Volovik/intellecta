@@ -12,6 +12,8 @@ import { defineStore } from 'pinia';
 import { useUserStore } from '@/stores/user';
 import { BaseError, isBaseError } from '@/types/types';
 
+const baseUrl = import.meta.env.VITE_API_SERVER;
+
 export const useAIStore: StoreDefinition<'AI', TAIStoreState, TAIStoreGetters, TAIStoreActions> = defineStore('AI', {
   state(): TAIStoreState {
     return {
@@ -41,7 +43,7 @@ export const useAIStore: StoreDefinition<'AI', TAIStoreState, TAIStoreGetters, T
     },
     async generateConversation(message: TChatMessage<string>): Promise<Error | undefined> {
       try {
-        const response = await fetch('/api/conversation', {
+        const response = await fetch(`${baseUrl}/api/conversation`, {
           method: 'POST',
           headers: {
             'Content-type': 'application/json',
@@ -82,7 +84,7 @@ export const useAIStore: StoreDefinition<'AI', TAIStoreState, TAIStoreGetters, T
     },
     async generateImage(message: TImageGenerateMessage): Promise<Error | undefined> {
       try {
-        const response = await fetch('/api/images', {
+        const response = await fetch(`${baseUrl}/api/images`, {
           method: 'POST',
           headers: {
             'Content-type': 'application/json',
@@ -105,7 +107,7 @@ export const useAIStore: StoreDefinition<'AI', TAIStoreState, TAIStoreGetters, T
     },
     async generateVideo(message: TChatMessage<string>): Promise<Error | undefined> {
       try {
-        const response = await fetch('/api/video', {
+        const response = await fetch(`${baseUrl}/api/video`, {
           method: 'POST',
           headers: {
             'Content-type': 'application/json',
@@ -128,7 +130,7 @@ export const useAIStore: StoreDefinition<'AI', TAIStoreState, TAIStoreGetters, T
     },
     async generateMusic(message: TChatMessage<string>): Promise<Error | undefined> {
       try {
-        const response = await fetch('/api/music', {
+        const response = await fetch(`${baseUrl}/api/music`, {
           method: 'POST',
           headers: {
             'Content-type': 'application/json',
@@ -151,7 +153,7 @@ export const useAIStore: StoreDefinition<'AI', TAIStoreState, TAIStoreGetters, T
     },
     async generateCode(message: TChatMessage<string>): Promise<Error | undefined> {
       try {
-        const response = await fetch('/api/code', {
+        const response = await fetch(`${baseUrl}/api/code`, {
           method: 'POST',
           headers: {
             'Content-type': 'application/json',

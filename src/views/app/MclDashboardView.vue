@@ -7,14 +7,13 @@ import type { TNavigationLinks } from '@/types/components/MclAside';
 
 import { defineAsyncComponent, markRaw, ref } from 'vue';
 import { navigationLinkNames } from '@/const';
-import { dashboardIconsMap } from '@/helpers/dashboardIconsMap';
 
 const dashboardNavigation: Ref<TNavigationLinks[]> = ref([]);
 
 navigationLinkNames.forEach((name: string) => {
   dashboardNavigation.value.push({
     title: name,
-    icon: markRaw(defineAsyncComponent(() => import(dashboardIconsMap[name]))),
+    icon: markRaw(defineAsyncComponent(() => import(`../../components/icons/app/${name}Icon.vue`))),
   });
 });
 </script>

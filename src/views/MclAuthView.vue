@@ -9,7 +9,7 @@ interface AuthListComponents {
   singIn: Component;
 }
 const createAsyncComp = (name: string): AsyncComponentLoader => {
-  return defineAsyncComponent(() => import(`@/components/auth/Mcl${name}.vue`));
+  return defineAsyncComponent(() => import('@' + `/components/auth/Mcl${name}.vue`));
 };
 
 const listComp: AuthListComponents = {

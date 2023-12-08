@@ -8,7 +8,6 @@ import IconLightning from '@/components/icons/IconLightning.vue';
 import MclProgress from '@/components/UI/MclProgress.vue';
 
 import { ref, defineAsyncComponent, markRaw, computed } from 'vue';
-import { dashboardIconsMap } from '@/helpers/dashboardIconsMap';
 import { MAX_COUNT, navigationLinkNames } from '@/const';
 import { useUserStore } from '@/stores/user';
 import { useModal } from '@/stores/modal';
@@ -20,7 +19,7 @@ const asideLinkData: Ref<TNavigationLinks[]> = ref([]);
 navigationLinkNames.forEach((name: string) => {
   asideLinkData.value.push({
     title: name,
-    icon: markRaw(defineAsyncComponent(() => import(dashboardIconsMap[name]))),
+    icon: markRaw(defineAsyncComponent(() => import('@' + `/components/icons/app/${name + 'Icon'}.vue`))),
   });
 });
 

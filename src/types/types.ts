@@ -106,6 +106,9 @@ export type TAIStoreActions = {
 
 export type TUserState = {
   supabaseSession: Session | null;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
   apiCount: number;
   isUpgrade: boolean;
 };
@@ -114,7 +117,6 @@ export type TUserGetters = {
   getSupabaseSession: (state: TUserState) => Session | null;
   getApiCount: (state: TUserState) => number;
   getIsUpgrade: (state: TUserState) => boolean;
-  getUser: (state: TUserState) => User | undefined;
 };
 
 export type TUserActions = {

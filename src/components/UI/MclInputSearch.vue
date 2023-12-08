@@ -14,7 +14,7 @@ const modelValue = defineModel<string>();
 </script>
 
 <template>
-  <form>
+  <form autocomplete="off">
     <label
       for="default-search"
       class="mb-2 text-sm font-medium text-truegray-6 sr-only dark:text-light-6"

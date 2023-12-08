@@ -1,15 +1,20 @@
 import type { StoreDefinition } from 'pinia';
 import type { TUserState, TUserGetters, TUserActions } from '@/types/types';
-import type { Session, User } from '@supabase/supabase-js';
+import type { Session } from '@supabase/supabase-js';
 import { defineStore } from 'pinia';
 import type { ExtendedUser } from '@/types/types';
 import { useAIStore } from '@/stores/artificialIntelligence';
 import { supabase } from '@/lib/supabase';
 
+const baseUrl = import.meta.env.VITE_API_SERVER;
+
 export const useUserStore: StoreDefinition<'user', TUserState, TUserGetters, TUserActions> = defineStore('user', {
   state(): TUserState {
     return {
       supabaseSession: null,
+      firstName: undefined,
+      lastName: undefined,
+      email: undefined,
       apiCount: 0,
       isUpgrade: true,
     };
@@ -18,7 +23,6 @@ export const useUserStore: StoreDefinition<'user', TUserState, TUserGetters, TUs
     getSupabaseSession: (state: TUserState): Session | null => state.supabaseSession,
     getApiCount: (state: TUserState): number => state.apiCount,
     getIsUpgrade: (state: TUserState): boolean => state.isUpgrade,
-    getUser: (state: TUserState): User | undefined => state.supabaseSession?.user,
   },
   actions: {
     setSupabaseSession(session: Session): void {
@@ -26,6 +30,9 @@ export const useUserStore: StoreDefinition<'user', TUserState, TUserGetters, TUs
       if (session) {
         if (JSON.stringify(this.supabaseSession) !== JSON.stringify(session)) {
           this.supabaseSession = session;
+          this.firstName = session.user.user_metadata.firstName;
+          this.lastName = session.user.user_metadata.lastName;
+          this.email = session.user.email;
           setAccessToken(session.access_token);
         } else {
           this.supabaseSession = null;
@@ -51,7 +58,7 @@ export const useUserStore: StoreDefinition<'user', TUserState, TUserGetters, TUs
     async userApiLimit(): Promise<void> {
       const token = this.supabaseSession?.access_token;
       try {
-        const response = await fetch('/api/user', {
+        const response = await fetch(`${baseUrl}/api/user`, {
           method: 'GET',
           headers: {
             'Content-type': 'application/json',
@@ -65,7 +72,7 @@ export const useUserStore: StoreDefinition<'user', TUserState, TUserGetters, TUs
       }
     },
     async stripeSubscription(): Promise<{ url: string }> {
-      const response = await fetch('/api/stripe', {
+      const response = await fetch(`${baseUrl}/api/stripe`, {
         method: 'GET',
         headers: {
           'Content-type': 'application/json',
@@ -76,7 +83,7 @@ export const useUserStore: StoreDefinition<'user', TUserState, TUserGetters, TUs
       return data as { url: string };
     },
     async stripeCheckSubscriptionStatus(): Promise<void> {
-      const response = await fetch('/api/stripe-check-status', {
+      const response = await fetch(`${baseUrl}/api/stripe-check-status`, {
         method: 'GET',
         headers: {
           'Content-type': 'application/json',
