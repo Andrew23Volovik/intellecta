@@ -15,6 +15,7 @@ export const useUserStore: StoreDefinition<'user', TUserState, TUserGetters, TUs
       firstName: undefined,
       lastName: undefined,
       email: undefined,
+      accessToken: '',
       apiCount: 0,
       isUpgrade: true,
     };
@@ -33,6 +34,7 @@ export const useUserStore: StoreDefinition<'user', TUserState, TUserGetters, TUs
           this.firstName = session.user.user_metadata.firstName;
           this.lastName = session.user.user_metadata.lastName;
           this.email = session.user.email;
+          this.accessToken = session.access_token;
           setAccessToken(session.access_token);
         } else {
           this.supabaseSession = null;
@@ -56,13 +58,12 @@ export const useUserStore: StoreDefinition<'user', TUserState, TUserGetters, TUs
       await this.userApiLimit();
     },
     async userApiLimit(): Promise<void> {
-      const token = this.supabaseSession?.access_token;
       try {
         const response = await fetch(`${baseUrl}/api/user`, {
           method: 'GET',
           headers: {
             'Content-type': 'application/json',
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${this.accessToken}`,
           },
         });
         const data = (await response.json()) as ExtendedUser;
@@ -76,7 +77,7 @@ export const useUserStore: StoreDefinition<'user', TUserState, TUserGetters, TUs
         method: 'GET',
         headers: {
           'Content-type': 'application/json',
-          Authorization: `Bearer ${this.supabaseSession?.access_token}`,
+          Authorization: `Bearer ${this.accessToken}`,
         },
       });
       const data = await response.json();
@@ -87,7 +88,7 @@ export const useUserStore: StoreDefinition<'user', TUserState, TUserGetters, TUs
         method: 'GET',
         headers: {
           'Content-type': 'application/json',
-          Authorization: `Bearer ${this.supabaseSession?.access_token}`,
+          Authorization: `Bearer ${this.accessToken}`,
         },
       });
       this.isUpgrade = await response.json();

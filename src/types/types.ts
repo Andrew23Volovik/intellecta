@@ -109,6 +109,7 @@ export type TUserState = {
   firstName?: string;
   lastName?: string;
   email?: string;
+  accessToken: string;
   apiCount: number;
   isUpgrade: boolean;
 };
