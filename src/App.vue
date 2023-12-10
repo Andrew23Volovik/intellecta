@@ -29,9 +29,6 @@ navigationLinkNames.slice(0, navigationLinkNames.length - 1).forEach((name: stri
   });
 });
 
-const { $patch } = useAIStore();
-$patch({ init: true });
-
 const { initSupabaseSession, stripeSubscription } = useUserStore();
 
 const upgrade = async () => {
@@ -44,6 +41,9 @@ const upgrade = async () => {
 
 let unsubscribe: () => void;
 initSupabaseSession().then((fn) => (unsubscribe = fn));
+
+const { $patch } = useAIStore();
+$patch({ init: true });
 
 onUnmounted(() => {
   unsubscribe();

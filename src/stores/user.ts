@@ -27,7 +27,7 @@ export const useUserStore: StoreDefinition<'user', TUserState, TUserGetters, TUs
   },
   actions: {
     async setSupabaseSession(session: Session): Promise<void> {
-      const { setAccessToken } = useAIStore();
+      const store = useAIStore();
       if (session) {
         if (JSON.stringify(this.supabaseSession) !== JSON.stringify(session)) {
           this.supabaseSession = session;
@@ -35,10 +35,10 @@ export const useUserStore: StoreDefinition<'user', TUserState, TUserGetters, TUs
           this.lastName = session.user.user_metadata.lastName;
           this.email = session.user.email;
           this.accessToken = session.access_token;
-          await setAccessToken(session.access_token);
+          await store.setAccessToken(session.access_token);
         } else {
           this.supabaseSession = null;
-          await setAccessToken('');
+          await store.setAccessToken('');
         }
       }
     },
