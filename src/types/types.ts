@@ -95,7 +95,7 @@ export type TAIStoreGetters = {
 };
 
 export type TAIStoreActions = {
-  setAccessToken(token: string): void;
+  setAccessToken(token: string): Promise<void>;
   updateApi(): Promise<void>;
   generateConversation(message: TChatMessage<string>): Promise<Error | undefined>;
   generateImage(message: TImageGenerateMessage): Promise<Error | undefined>;
@@ -121,7 +121,7 @@ export type TUserGetters = {
 };
 
 export type TUserActions = {
-  setSupabaseSession(session: Session): void;
+  setSupabaseSession(session: Session): Promise<void>;
   initSupabaseSession(): Promise<() => void>;
   singOut(): Promise<void>;
   updateApiCount(): Promise<void>;

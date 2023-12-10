@@ -26,7 +26,7 @@ export const useUserStore: StoreDefinition<'user', TUserState, TUserGetters, TUs
     getIsUpgrade: (state: TUserState): boolean => state.isUpgrade,
   },
   actions: {
-    setSupabaseSession(session: Session): void {
+    async setSupabaseSession(session: Session): Promise<void> {
       const { setAccessToken } = useAIStore();
       if (session) {
         if (JSON.stringify(this.supabaseSession) !== JSON.stringify(session)) {
@@ -35,10 +35,10 @@ export const useUserStore: StoreDefinition<'user', TUserState, TUserGetters, TUs
           this.lastName = session.user.user_metadata.lastName;
           this.email = session.user.email;
           this.accessToken = session.access_token;
-          setAccessToken(session.access_token);
+          await setAccessToken(session.access_token);
         } else {
           this.supabaseSession = null;
-          setAccessToken('');
+          await setAccessToken('');
         }
       }
     },

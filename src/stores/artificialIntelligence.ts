@@ -34,8 +34,8 @@ export const useAIStore: StoreDefinition<'AI', TAIStoreState, TAIStoreGetters, T
     getCodeChat: (state: TAIStoreState): TChatMessage<string>[] => state.codeChat,
   },
   actions: {
-    setAccessToken(token: string): void {
-      this.accessToken = token;
+    async setAccessToken(token: string): Promise<void> {
+      await new Promise((resolve) => resolve((this.accessToken = token)));
     },
     updateApi(): Promise<void> {
       const { updateApiCount } = useUserStore();
