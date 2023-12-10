@@ -44,7 +44,7 @@ export const useUserStore: StoreDefinition<'user', TUserState, TUserGetters, TUs
     },
     async initSupabaseSession(): Promise<() => void> {
       const { data: authLisener } = supabase.auth.onAuthStateChange(async (event, newSession) => {
-        newSession && this.setSupabaseSession(newSession);
+        newSession && (await this.setSupabaseSession(newSession));
       });
 
       return () => {
