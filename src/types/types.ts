@@ -77,7 +77,6 @@ export type TImageGenerateMessage = {
 };
 
 export type TAIStoreState = {
-  accessToken: string;
   conversationChat: TChatMessage<string>[];
   imageChat: TChatMessage<TChatImage[] | string>[];
   videoChat: TChatMessage<string[] | string>[];
@@ -95,7 +94,6 @@ export type TAIStoreGetters = {
 };
 
 export type TAIStoreActions = {
-  setAccessToken(token: string): Promise<void>;
   updateApi(): Promise<void>;
   generateConversation(message: TChatMessage<string>): Promise<Error | undefined>;
   generateImage(message: TImageGenerateMessage): Promise<Error | undefined>;
@@ -118,6 +116,7 @@ export type TUserGetters = {
   getSupabaseSession: (state: TUserState) => Session | null;
   getApiCount: (state: TUserState) => number;
   getIsUpgrade: (state: TUserState) => boolean;
+  getAccessToken: (state: TUserState) => string;
 };
 
 export type TUserActions = {

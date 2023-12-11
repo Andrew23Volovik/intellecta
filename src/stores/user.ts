@@ -3,7 +3,6 @@ import type { TUserState, TUserGetters, TUserActions } from '@/types/types';
 import type { Session } from '@supabase/supabase-js';
 import { defineStore } from 'pinia';
 import type { ExtendedUser } from '@/types/types';
-import { useAIStore } from '@/stores/artificialIntelligence';
 import { supabase } from '@/lib/supabase';
 
 const baseUrl = import.meta.env.VITE_API_SERVER;
@@ -24,10 +23,10 @@ export const useUserStore: StoreDefinition<'user', TUserState, TUserGetters, TUs
     getSupabaseSession: (state: TUserState): Session | null => state.supabaseSession,
     getApiCount: (state: TUserState): number => state.apiCount,
     getIsUpgrade: (state: TUserState): boolean => state.isUpgrade,
+    getAccessToken: (state: TUserState): string => state.accessToken,
   },
   actions: {
     async setSupabaseSession(session: Session): Promise<void> {
-      const store = useAIStore();
       if (session) {
         if (JSON.stringify(this.supabaseSession) !== JSON.stringify(session)) {
           this.supabaseSession = session;
@@ -35,10 +34,12 @@ export const useUserStore: StoreDefinition<'user', TUserState, TUserGetters, TUs
           this.lastName = session.user.user_metadata.lastName;
           this.email = session.user.email;
           this.accessToken = session.access_token;
-          await store.setAccessToken(session.access_token);
         } else {
           this.supabaseSession = null;
-          await store.setAccessToken('');
+          this.firstName = undefined;
+          this.lastName = undefined;
+          this.email = undefined;
+          this.accessToken = '';
         }
       }
     },

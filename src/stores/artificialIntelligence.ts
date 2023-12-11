@@ -17,7 +17,6 @@ const baseUrl = import.meta.env.VITE_API_SERVER;
 export const useAIStore: StoreDefinition<'AI', TAIStoreState, TAIStoreGetters, TAIStoreActions> = defineStore('AI', {
   state(): TAIStoreState {
     return {
-      accessToken: '',
       conversationChat: [],
       imageChat: [],
       videoChat: [],
@@ -34,20 +33,18 @@ export const useAIStore: StoreDefinition<'AI', TAIStoreState, TAIStoreGetters, T
     getCodeChat: (state: TAIStoreState): TChatMessage<string>[] => state.codeChat,
   },
   actions: {
-    async setAccessToken(token: string): Promise<void> {
-      await new Promise((resolve) => resolve((this.accessToken = token)));
-    },
     updateApi(): Promise<void> {
       const { updateApiCount } = useUserStore();
       return updateApiCount();
     },
     async generateConversation(message: TChatMessage<string>): Promise<Error | undefined> {
+      const userStore = useUserStore();
       try {
         const response = await fetch(`${baseUrl}/api/conversation`, {
           method: 'POST',
           headers: {
             'Content-type': 'application/json',
-            Authorization: `Bearer ${this.accessToken}`,
+            Authorization: `Bearer ${userStore.getAccessToken}`,
           },
           body: JSON.stringify({
             prompt: message.content,
@@ -83,12 +80,13 @@ export const useAIStore: StoreDefinition<'AI', TAIStoreState, TAIStoreGetters, T
       }
     },
     async generateImage(message: TImageGenerateMessage): Promise<Error | undefined> {
+      const userStore = useUserStore();
       try {
         const response = await fetch(`${baseUrl}/api/images`, {
           method: 'POST',
           headers: {
             'Content-type': 'application/json',
-            Authorization: `Bearer ${this.accessToken}`,
+            Authorization: `Bearer ${userStore.getAccessToken}`,
           },
           body: JSON.stringify({
             prompt: message,
@@ -106,12 +104,13 @@ export const useAIStore: StoreDefinition<'AI', TAIStoreState, TAIStoreGetters, T
       }
     },
     async generateVideo(message: TChatMessage<string>): Promise<Error | undefined> {
+      const userStore = useUserStore();
       try {
         const response = await fetch(`${baseUrl}/api/video`, {
           method: 'POST',
           headers: {
             'Content-type': 'application/json',
-            Authorization: `Bearer ${this.accessToken}`,
+            Authorization: `Bearer ${userStore.getAccessToken}`,
           },
           body: JSON.stringify({
             prompt: message.content,
@@ -129,12 +128,13 @@ export const useAIStore: StoreDefinition<'AI', TAIStoreState, TAIStoreGetters, T
       }
     },
     async generateMusic(message: TChatMessage<string>): Promise<Error | undefined> {
+      const userStore = useUserStore();
       try {
         const response = await fetch(`${baseUrl}/api/music`, {
           method: 'POST',
           headers: {
             'Content-type': 'application/json',
-            Authorization: `Bearer ${this.accessToken}`,
+            Authorization: `Bearer ${userStore.getAccessToken}`,
           },
           body: JSON.stringify({
             prompt: message.content,
@@ -152,12 +152,13 @@ export const useAIStore: StoreDefinition<'AI', TAIStoreState, TAIStoreGetters, T
       }
     },
     async generateCode(message: TChatMessage<string>): Promise<Error | undefined> {
+      const userStore = useUserStore();
       try {
         const response = await fetch(`${baseUrl}/api/code`, {
           method: 'POST',
           headers: {
             'Content-type': 'application/json',
-            Authorization: `Bearer ${this.accessToken}`,
+            Authorization: `Bearer ${userStore.getAccessToken}`,
           },
           body: JSON.stringify({
             prompt: message.content,
