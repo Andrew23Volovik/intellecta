@@ -45,14 +45,20 @@ export const useUserStore: StoreDefinition<'user', TUserState, TUserGetters, TUs
       }
     },
     async initSupabaseSession(): Promise<() => void> {
-      const { data: authLisener } = supabase.auth.onAuthStateChange(async (event, newSession) => {
-        console.log('----', event, newSession);
-        newSession && this.setSupabaseSession(newSession);
-      });
-      console.log(['RESOLVE_initSupabaseSession']);
-      return () => {
-        authLisener?.subscription.unsubscribe();
-      };
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      session && this.setSupabaseSession(session);
+
+      // const { data: authLisener } = supabase.auth.onAuthStateChange(async (event, newSession) => {
+      //   console.log('----', event, newSession);
+      //   newSession && this.setSupabaseSession(newSession);
+      // });
+      // console.log(['RESOLVE_initSupabaseSession']);
+      // return () => {
+      //   authLisener?.subscription.unsubscribe();
+      // };
+      return () => {};
     },
     async singOut(): Promise<void> {
       await supabase.auth.signOut();

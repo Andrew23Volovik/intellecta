@@ -29,10 +29,10 @@ navigationLinkNames.slice(0, navigationLinkNames.length - 1).forEach((name: stri
   });
 });
 
-const { initSupabaseSession, stripeSubscription } = useUserStore();
+const store = useUserStore();
 
 const upgrade = async () => {
-  const data = await stripeSubscription();
+  const data = await store.stripeSubscription();
 
   if ('url' in data) {
     window.location.href = data.url;
@@ -41,9 +41,10 @@ const upgrade = async () => {
 
 let unsubscribe: () => void;
 const init = async () => {
-  unsubscribe = await initSupabaseSession();
+  unsubscribe = await store.initSupabaseSession();
 };
 init();
+console.log(['store'], store.accessToken);
 
 const { $patch } = useAIStore();
 $patch({ init: true });

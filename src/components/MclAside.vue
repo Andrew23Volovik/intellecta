@@ -24,12 +24,10 @@ navigationLinkNames.forEach((name: string) => {
 });
 
 const store = useUserStore();
+console.log(['store-aside'], store.accessToken);
 
-setTimeout(() => {
-  store.userApiLimit();
-  store.stripeCheckSubscriptionStatus();
-}, 10000);
-
+store.userApiLimit();
+store.stripeCheckSubscriptionStatus();
 
 const progress: ComputedRef<number> = computed(() => {
   if (store.supabaseSession) {
