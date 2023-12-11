@@ -24,7 +24,6 @@ navigationLinkNames.forEach((name: string) => {
 });
 
 const store = useUserStore();
-console.log(['store-aside'], store.accessToken);
 
 store.userApiLimit();
 store.stripeCheckSubscriptionStatus();

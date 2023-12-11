@@ -6,7 +6,7 @@ import MclCard from '@/components/UI/MclCard.vue';
 import IconLightning from '@/components/icons/IconLightning.vue';
 
 import type { DefineComponent, Ref } from 'vue';
-import { defineAsyncComponent, markRaw, onUnmounted, ref } from 'vue';
+import { defineAsyncComponent, markRaw, ref } from 'vue';
 
 import { useAIStore } from '@/stores/artificialIntelligence';
 import { useUserStore } from '@/stores/user';
@@ -39,19 +39,10 @@ const upgrade = async () => {
   }
 };
 
-let unsubscribe: () => void;
-const init = async () => {
-  unsubscribe = await store.initSupabaseSession();
-};
-init();
-console.log(['store'], store.accessToken);
+store.initSupabaseSession();
 
 const { $patch } = useAIStore();
 $patch({ init: true });
-
-onUnmounted(() => {
-  unsubscribe();
-});
 </script>
 
 <template>

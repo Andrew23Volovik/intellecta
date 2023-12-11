@@ -29,7 +29,6 @@ export const useUserStore: StoreDefinition<'user', TUserState, TUserGetters, TUs
     setSupabaseSession(session: Session): void {
       if (session) {
         if (JSON.stringify(this.supabaseSession) !== JSON.stringify(session)) {
-          console.log(['ACEESS_TOKEN_setSupabaseSession'], session.access_token);
           this.supabaseSession = session;
           this.firstName = session.user.user_metadata.firstName;
           this.lastName = session.user.user_metadata.lastName;
@@ -44,21 +43,11 @@ export const useUserStore: StoreDefinition<'user', TUserState, TUserGetters, TUs
         }
       }
     },
-    async initSupabaseSession(): Promise<() => void> {
+    async initSupabaseSession(): Promise<void> {
       const {
         data: { session },
       } = await supabase.auth.getSession();
       session && this.setSupabaseSession(session);
-
-      // const { data: authLisener } = supabase.auth.onAuthStateChange(async (event, newSession) => {
-      //   console.log('----', event, newSession);
-      //   newSession && this.setSupabaseSession(newSession);
-      // });
-      // console.log(['RESOLVE_initSupabaseSession']);
-      // return () => {
-      //   authLisener?.subscription.unsubscribe();
-      // };
-      return () => {};
     },
     async singOut(): Promise<void> {
       await supabase.auth.signOut();
@@ -67,8 +56,6 @@ export const useUserStore: StoreDefinition<'user', TUserState, TUserGetters, TUs
       await this.userApiLimit();
     },
     async userApiLimit(): Promise<void> {
-      console.log(['RESOLVE_userApiLimit']);
-      console.log(['ACEESS_TOKEN_userApiLimit'], this.accessToken);
       try {
         const response = await fetch(`${baseUrl}/api/user`, {
           method: 'GET',
@@ -95,8 +82,6 @@ export const useUserStore: StoreDefinition<'user', TUserState, TUserGetters, TUs
       return data as { url: string };
     },
     async stripeCheckSubscriptionStatus(): Promise<void> {
-      console.log(['RESOLVE_stripeCheckSubscriptionStatus']);
-      console.log(['ACEESS_TOKEN_stripeCheckSubscriptionStatus'], this.accessToken);
       const response = await fetch(`${baseUrl}/api/stripe-check-status`, {
         method: 'GET',
         headers: {

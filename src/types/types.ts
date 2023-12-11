@@ -121,7 +121,7 @@ export type TUserGetters = {
 
 export type TUserActions = {
   setSupabaseSession(session: Session): void;
-  initSupabaseSession(): Promise<() => void>;
+  initSupabaseSession(): Promise<void>;
   singOut(): Promise<void>;
   updateApiCount(): Promise<void>;
   userApiLimit(): Promise<void>;
