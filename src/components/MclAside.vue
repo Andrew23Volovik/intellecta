@@ -28,9 +28,8 @@ const store = useUserStore();
 setTimeout(() => {
   store.userApiLimit();
   store.stripeCheckSubscriptionStatus();
-}, 1000);
+}, 10000);
 
-console.log();
 
 const progress: ComputedRef<number> = computed(() => {
   if (store.supabaseSession) {
