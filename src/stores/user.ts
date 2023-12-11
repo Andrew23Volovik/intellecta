@@ -49,7 +49,7 @@ export const useUserStore: StoreDefinition<'user', TUserState, TUserGetters, TUs
         console.log('----', event, newSession);
         newSession && this.setSupabaseSession(newSession);
       });
-
+      console.log(['RESOLVE_initSupabaseSession']);
       return () => {
         authLisener?.subscription.unsubscribe();
       };
@@ -61,6 +61,7 @@ export const useUserStore: StoreDefinition<'user', TUserState, TUserGetters, TUs
       await this.userApiLimit();
     },
     async userApiLimit(): Promise<void> {
+      console.log(['RESOLVE_userApiLimit']);
       console.log(['ACEESS_TOKEN_userApiLimit'], this.accessToken);
       try {
         const response = await fetch(`${baseUrl}/api/user`, {
@@ -88,6 +89,7 @@ export const useUserStore: StoreDefinition<'user', TUserState, TUserGetters, TUs
       return data as { url: string };
     },
     async stripeCheckSubscriptionStatus(): Promise<void> {
+      console.log(['RESOLVE_stripeCheckSubscriptionStatus']);
       console.log(['ACEESS_TOKEN_stripeCheckSubscriptionStatus'], this.accessToken);
       const response = await fetch(`${baseUrl}/api/stripe-check-status`, {
         method: 'GET',

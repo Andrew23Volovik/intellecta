@@ -5,11 +5,11 @@ import IconArrowRight from '@/components/icons/IconArrowRight.vue';
 import MclCard from '@/components/UI/MclCard.vue';
 import IconLightning from '@/components/icons/IconLightning.vue';
 
-import type { Ref, DefineComponent } from 'vue';
+import type { DefineComponent, Ref } from 'vue';
+import { defineAsyncComponent, markRaw, onUnmounted, ref } from 'vue';
 
 import { useAIStore } from '@/stores/artificialIntelligence';
 import { useUserStore } from '@/stores/user';
-import { onUnmounted, defineAsyncComponent, markRaw, ref } from 'vue';
 import { navigationLinkNames } from '@/const';
 import { useModal } from '@/stores/modal';
 
@@ -40,7 +40,10 @@ const upgrade = async () => {
 };
 
 let unsubscribe: () => void;
-initSupabaseSession().then((fn) => (unsubscribe = fn));
+const init = async () => {
+  unsubscribe = await initSupabaseSession();
+};
+init();
 
 const { $patch } = useAIStore();
 $patch({ init: true });
