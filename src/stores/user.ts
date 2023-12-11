@@ -26,7 +26,7 @@ export const useUserStore: StoreDefinition<'user', TUserState, TUserGetters, TUs
     getAccessToken: (state: TUserState): string => state.accessToken,
   },
   actions: {
-    async setSupabaseSession(session: Session): Promise<void> {
+    setSupabaseSession(session: Session): void {
       if (session) {
         if (JSON.stringify(this.supabaseSession) !== JSON.stringify(session)) {
           this.supabaseSession = session;
@@ -45,7 +45,8 @@ export const useUserStore: StoreDefinition<'user', TUserState, TUserGetters, TUs
     },
     async initSupabaseSession(): Promise<() => void> {
       const { data: authLisener } = supabase.auth.onAuthStateChange(async (event, newSession) => {
-        newSession && (await this.setSupabaseSession(newSession));
+        console.log('----', event, newSession);
+        newSession && this.setSupabaseSession(newSession);
       });
 
       return () => {
